@@ -1,4 +1,4 @@
-#Ansible + CIS Benchmarks + RHEL/CentOS 6
+# Ansible + CIS Benchmarks + RHEL/CentOS 6
 
 Ansible audit for CIS.
 
