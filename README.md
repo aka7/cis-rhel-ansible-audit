@@ -9,7 +9,7 @@ Insipired by https://github.com/major/cis-rhel-ansible but instead of applying t
 ### setup
 add  hosts in your ansible file, i.e test-hosts
 
-update vars/main.yml with your setup
+update vars/main.yml to suit your setup
 
 ### Example:
 ```
