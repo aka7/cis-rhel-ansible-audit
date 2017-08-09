@@ -6,6 +6,14 @@ This is an ansible playbook for auditing a system running Red Hat Enterprise Lin
 
 Insipired by https://github.com/major/cis-rhel-ansible but instead of applying the changes, this will just report if a system passes or fails for each task.
 
+# NOTE
+this project is still in profject,  added following sections so far
+- section1
+- section2
+- section3
+- section4
+- section5
+
 ### setup
 add  hosts in your ansible file, i.e test-hosts
 
@@ -71,10 +79,11 @@ TASK: cis : 5.2.18 Make the Audit Configuration Immutable (Scored), alif.aka47.l
 
 
 TODO:
-  - add missing sections
+  - add missing sections (6, 7 and 8)
   - work on custom_loger to output in json
   - create reports based on the output (html)
 
 # Limitations
 requires ansible > 2.1
+
 Tested on ansible 2.1 only.
