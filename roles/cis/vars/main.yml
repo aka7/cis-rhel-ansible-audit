@@ -1,5 +1,5 @@
 ---
-grubconf: "{{ '/etc/grub.conf' if (ansible_distribution_major_version == '6' or ansible_distribution_major_version == '5' ) else '/etc/grub2.conAf' }}"
+grubconf: "{{ '/etc/grub.conf' if (ansible_distribution_major_version == '6' or ansible_distribution_major_version == '5' ) else '/etc/grub2.conf' }}"
 fstab: /etc/fstab
 mailconfig: /etc/exim/exim.conf
 auditdconf: /etc/audit/auditd.conf
@@ -8,6 +8,6 @@ auditd_rules: /etc/audit/audit.rules
 syslog_dest: "{{ '10.183.195.60' if ansible_domain == 'akait.local' else '10.167.195.60' }}"
 puppet_server: "{{ 'puppet.akait.local' if ansible_domain == 'akait.local' else 'puppetpp.akaitpp.local' if ansible_domain == 'akaitpp.local' else 'akaittd.local'}}"
 ntp_server: "{{ 'a-p-ntp-01' if ansible_domain == 'akait.local' else 'a-o-ntp-01' if ansible_domain == 'akaitpp.local' else 'a-t-ntp-01'}}"
-sudoers_file: "{{ '/etc/sudoers.d/10_qualy' if ansible_domain == 'akaittd.local' else '/etc/opt/quest/qpm4u/policy/sudoers'}}"
+sudoers_file: "{{ '/etc/sudoers.d/10_qualys' if ansible_domain == 'akaittd.local' else '/etc/opt/quest/qpm4u/policy/sudoers'}}"
 ftpd_package: 'vsftpd'
 httpd_package: 'httpd'

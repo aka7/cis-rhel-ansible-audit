@@ -6,8 +6,11 @@ This is an ansible playbook for auditing a system running Red Hat Enterprise Lin
 
 Insipired by https://github.com/major/cis-rhel-ansible but instead of applying the changes, this will just report if a system passes or fails for each task.
 
-Example:
-add  hosts in test-hosts
+### setup
+add  hosts in your ansible file, i.e test-hosts
+update vars/main.yml with your setup
+
+### Example:
 ```
 ansible-playbook -i test-hosts playbook.yml --extra-vars="nodes=all" --tags=level2 -K -k
 ```
