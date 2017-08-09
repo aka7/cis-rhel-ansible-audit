@@ -8,12 +8,15 @@ Insipired by https://github.com/major/cis-rhel-ansible but instead of applying t
 
 ### setup
 add  hosts in your ansible file, i.e test-hosts
+
 update vars/main.yml with your setup
 
 ### Example:
 ```
 ansible-playbook -i test-hosts playbook.yml --extra-vars="nodes=all" --tags=level2 -K -k
 ```
+## WARN
+some tasks may take a long time to run, check the scripts in files/bin
 
 # LOGS
 
