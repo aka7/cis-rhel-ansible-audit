@@ -1,0 +1,399 @@
+---
+#
+#   2017
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+
+  - name: 1.1.1 Create Separate Partition for /tmp (Scored)
+    shell: grep "[[:space:]]/tmp[[:space:]]" /etc/fstab
+    register: out_111
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.1
+      - 1.1.1
+
+  - name: 1.1.2 Set nodev option for /tmp Partition (Scored) 
+    shell: grep "[[:space:]]/tmp[[:space:]]" /etc/fstab
+    register: out_112
+    failed_when: >
+     'nodev' not in out_112.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.2
+      - 1.1.2
+
+  - name: 1.1.3 Set nosuid option for /tmp Partition (Scored) 
+    shell: grep "[[:space:]]/tmp[[:space:]]" /etc/fstab
+    register: out_113
+    failed_when: >
+     'nosuid' not in out_113.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.3
+      - 1.1.3
+
+  - name: 1.1.3 Set noexec option for /tmp Partition (Scored) 
+    shell: grep "[[:space:]]/tmp[[:space:]]" /etc/fstab
+    register: out_114
+    failed_when: >
+     'noexec' not in out_114.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.4
+      - 1.1.4
+
+  - name: 1.1.5 Create Separate Partition for /var (Scored)
+    shell: grep "[[:space:]]/var[[:space:]]" /etc/fstab
+    register: out_115
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.5
+      - 1.1.5
+
+  - name: 1.1.6 Bind Mount the /var/tmp directory to /tmp (Scored)
+    shell:  grep -e "^/tmp[[:space:]]" /etc/fstab | grep /var/tmp 
+    register: out_116
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.6
+      - 1.1.6
+
+  - name: 1.1.7 Create Separate Partition for /var/log (Scored)
+    shell: grep "[[:space:]]/var/log[[:space:]]" /etc/fstab
+    register: out_117
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.7
+      - 1.1.7
+
+  - name: 1.1.8 Create Separate Partition for /var/log/audit (Scored)
+    shell: grep "[[:space:]]/var/log/audit[[:space:]]" /etc/fstab
+    register: out_118
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.8
+      - 1.1.8
+
+  - name: 1.1.9 Create Separate Partition for /home (Scored)
+    shell: grep "[[:space:]]/home[[:space:]]" /etc/fstab
+    register: out_118
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.9
+      - 1.1.9
+
+  - name: 1.1.10 Add nodev Option to /home Partition (Scored)
+    shell: grep "[[:space:]]/home[[:space:]]" /etc/fstab
+    register: out_1110
+    failed_when: >
+     'nodev' not in out_1110.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.10
+      - 1.1.10
+
+  - name: 1.1.11 Add nodev Option to Removable Media Partitions (Not Scored)
+    debug: msg="*** Not relevant."
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.11
+      - 1.1.11
+
+  - name: 1.1.12 Add noexec Option to Removable Media Partitions (Not Scored)
+    debug: msg="*** Not relevant."
+    changed_when: false
+    tags:
+      - notscored
+      - section1.1
+      - section1.1.12
+      - 1.1.12
+
+  - name: 1.1.13 Add nosuid Option to Removable Media Partitions (Not Scored)
+    debug: msg="*** Not relevant."
+    changed_when: false
+    tags:
+      - notscored
+      - section1.1
+      - section1.1.13
+      - 1.1.13
+
+  - name: 1.1.14 Add nodev Option to /dev/shm Partition (Scored)
+    shell: grep /dev/shm /etc/fstab
+    register: out_1114
+    failed_when: >
+     'nodev' not in out_1114.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - section1.1
+      - section1.1.14
+      - scored
+      - 1.1.14
+
+  - name: 1.1.15 Add nosuid Option to /dev/shm Partition (Scored)
+    shell: grep /dev/shm /etc/fstab
+    register: out_1115
+    failed_when: >
+     'nosuid' not in out_1115.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - section1.1
+      - section1.1.15
+      - scored
+      - 1.1.15 
+
+  - name: 1.1.16 Add noexec Option to /dev/shm Partition (Scored)
+    shell: grep /dev/shm /etc/fstab
+    register: out_1116
+    failed_when: >
+     'noexec' not in out_1116.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - section1.1
+      - section1.1.16
+      - scored
+      - 1.1.16
+
+  - name: 1.1.17 Set sticky bit on all world-writeable directories (Scored)
+    shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \)
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.1
+      - section1.1.17
+      - 1.1.17
+
+  - name: 1.2.1 Configure Connection to the RHN RPM repositories (Not Scored)
+    command: yum check-update
+    register: result
+    failed_when: "result.rc == 1"
+    when: ansible_distribution == "RedHat" or ansible_distribution == 'CentOS'
+    changed_when: false
+    tags:
+      - notscored
+      - section1.2
+      - section1.2.1
+
+  - name: 1.2.2 Verify Red Hat GPG key is installed (Scored)
+    command: rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey 
+    when: ansible_distribution == "RedHat" or ansible_distribution == 'CentOS'
+    changed_when: false
+    tags:
+      - scored
+      - section1.2
+      - section1.2.2
+
+  - name: 1.2.3 Verify that gpgcheck is Globally Activated (Scored)
+    shell: grep gpgcheck /etc/yum.conf
+    register: out_123
+    failed_when: >
+     'gpgcheck=1' not in out_123.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.2
+      - section1.2.3
+      - 1.2.3
+
+  - name: 1.2.5 Obtain software package updates with yum (Not Scored)
+    debug: msg="*** Check manually."
+    changed_when: false
+    tags:
+      - notscored
+      - section1.2
+      - section1.2.5
+
+  - name: 1.2.6 Verify package integrity using RPM (Not Scored)
+    debug:
+      msg: "*** Check via cron/AIDE/manually"
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.2
+      - section1.2.6
+
+  - name: 1.5.1 Get Absolute Path to grub.conf
+    command: readlink -f /etc/grub.conf
+    register: readlink
+    changed_when: false
+    always_run: yes
+    tags:
+      - scored
+      - section1.5
+      - section1.5.1
+
+  - name: 1.5.1 Set User/Group Owner on /etc/grub.conf (Scored)
+    stat:
+      path: /etc/grub.conf
+    register: grub
+    failed_when: >
+      not grub.stat.exists or grub.stat.gid != 0 or grub.stat.uid != 0
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.5
+      - section1.5.1
+      - 1.5.1
+
+  - name: 1.5.2 Set Permissions on /etc/grub.conf (Scored)
+    stat:
+      path: /etc/grub.conf
+    register: grubperm
+    failed_when: >
+      not grubperm.stat.exists or grubperm.stat.mode != 0600
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored 
+      - section1.5
+      - section1.5.2
+      - 1.5.2
+
+  - name: 1.5.3 Set boot loader password (Scored)
+    shell: grep "^password" /etc/grub.conf
+    register: grubpass
+    failed_when: >
+      "passowrd" not in grubpass.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.5
+      - section1.5.3
+      - 1.5.3
+
+  - name: 1.5.4 Require authentication for single-user mode (Scored)
+    shell: grep SINGLE /etc/sysconfig/init
+    register: single
+    failed_when: >
+      "SINGLE=/sbin/sulogin" not in single.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.5
+      - section1.5.4
+      - 1.5.4
+
+  - name: 1.5.5 Disable Interactive Boot (Scored)
+    shell: grep "^PROMPT=" /etc/sysconfig/init
+    register: prompt
+    failed_when: >
+      "PROMPT=no" not in prompt.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.5
+      - section1.5.5
+      - 1.5.5
+
+  - name: 1.6.1 Restrict core dumps (Scored) - via pam
+    shell:  grep "hard core" /etc/security/limits.conf
+    register: coredump
+    failed_when: >
+      "* hard core 0" not in coredump.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.6
+      - section1.6.1
+      - 1.6.1
+
+  - name: 1.6.1 Restrict core dumps (Scored) - via sysctl
+    shell: sysctl fs.suid_dumpable
+    register: coredump2
+    failed_when: >
+      "fs.suid_dumpable = 0" not in coredump2.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.6
+      - section1.6.1
+      - 1.6.1
+
+  - name: 1.6.2 Configure ExecShield (Scored)
+    shell: sysctl kernel.exec-shield
+    register: shield
+    failed_when: >
+      "kernel.exec-shield = 1" not in shield.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.6
+      - section1.6.2
+      - 1.6.2
+
+  - name: 1.6.3 Enable Randomized Virtual Memory Region Placement (Scored)
+    shell: sysctl kernel.randomize_va_space
+    register: random
+    failed_when: >
+      "kernel.randomize_va_space = 2" not in random.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.6
+      - section1.6.3
+      - 1.6.3
+
+  - name: 1.7 Use the Latest OS Release (Not Scored)
+    shell:  cat /etc/redhat-release; uname -r
+    when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.7
+      - 1.7.1

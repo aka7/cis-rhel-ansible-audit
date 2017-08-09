@@ -1,0 +1,235 @@
+---
+#
+# Copyright 2017
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+
+  - name: 3.1 Set Daemon umask (Scored)
+    shell: grep umask /etc/sysconfig/init
+    register: umask_out
+    failed_when: >
+      umask_out.rc != 0 and ('027' not in umask_out.stdout )
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section3.1
+
+  - name: 3.2 Remove X Windows (runlevel 3) (Scored)
+    shell: grep "^id:" /etc/inittab 
+    register: xwin
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'id:3:initdefault' not in xwin.stdout 
+    tags:
+      - scored
+      - section3.2
+
+  - name: 3.2 Remove X Windows (package) (Scored)
+    shell: rpm -q xorg-x11-server-common
+    register: out32
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out32.stdout 
+    tags:
+      - scored
+      - section3.2
+
+  - name: 3.3 Disable Avahi Server (disable service) (Scored)
+    shell: chkconfig --list avahi-daemon 
+    register: out33
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      out33.rc == 0 and ':on' in out33.stdout 
+    tags:
+      - scored
+      - section3.3
+
+  - name: 3.4 Disable Print Server - CUPS (Not Scored)
+    shell: chkconfig --list cups
+    register: out34
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      out34.rc == 0 and ':on' in out34.stdout 
+    tags:
+      - notscored
+      - section3.4
+
+  - name: 3.5 Remove DHCP Server (Scored)
+    shell: rpm -q dhcp
+    register: out35
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out35.stdout 
+    tags:
+      - scored
+      - section3.5
+
+  - name: 3.6 Configure Network Time Protocol (ipv4) (Scored)
+    shell: grep "restrict default" /etc/ntp.conf
+    register: out36
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'restrict default kod nomodify notrap nopeer noquery' not in out36.stdout 
+    tags:
+      - scored
+      - section3.6
+
+  - name: 3.6 Configure Network Time Protocol (ipv4) (Scored)
+    shell: grep "{{ ntp_server }}" /etc/ntp.conf
+    register: ntp
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section3.6
+
+  - name: 3.7 Remove LDAP (Not Scored)
+    shell: rpm -q openlddap-servers
+    register: out37
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out37.stdout 
+    tags:
+      - notscored
+      - section3.7
+
+  - name: 3.7 Remove LDAP clients (Not Scored)
+    shell: rpm -q openlddap-clients
+    register: out37_client
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out37_client.stdout 
+    tags:
+      - notscored
+      - section3.7
+
+  - shell: chkconfig --list {{ item }}
+    register: nfscheck
+    with_items:
+      - nfslock
+      - rpcgssd
+      - rpcbind
+      - rpcidmapd
+      - rpcsvcgssd
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      ':on' in nfscheck.stdout  
+    tags:
+      - notscored
+      - section3.8
+
+  - name: 3.8 Disable NFS and RPC (check for nfs-utils) (Not Scored)
+    debug:
+      msg: "{{ nfscheck.results }}"
+    tags:
+      - notscored
+      - section3.8
+
+  - name: 3.9 Remove DNS Server (Not Scored)
+    shell: rpm -q bind
+    register: out39
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out39.stdout 
+    tags:
+      - notscored
+      - section3.9
+
+  - name: 3.10 Remove FTP Server (Not Scored)
+    shell: rpm -q "{{ ftpd_package }}"
+    register: out310
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out310.stdout 
+    tags:
+      - notscored
+      - section3.10
+
+  - name: 3.11 Remove HTTP Server (Not Scored)
+    shell: rpm -q "{{ httpd_package }}"
+    register: out311
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out311.stdout 
+    tags:
+      - notscored
+      - section3.11
+
+  - name: 3.12 Remove Dovecot (IMAP and POP3 services) (Not Scored)
+    shell: rpm -q dovecot
+    register: out312
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out312.stdout 
+    tags:
+      - notscored
+      - section3.12
+
+  - name: 3.13 Remove Samba (Not Scored)
+    shell: rpm -q samba
+    register: out313
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out313.stdout 
+    tags:
+      - notscored
+      - section3.13
+
+  - name: 3.14 Remove HTTP Proxy Server (Not Scored)
+    shell: rpm -q squid
+    register: out314
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out314.stdout 
+    tags:
+      - notscored
+      - section3.14
+
+  - name: 3.15 Remove SNMP Server (Not Scored)
+    shell: rpm -q net-snmp
+    register: out315
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out315.stdout 
+    tags:
+      - notscored
+      - section3.15
+
+  - name: 3.16 Configure Mail Transfer Agent for Local-Only Mode (Scored)
+    shell: netstat -an | grep LIST | grep ":25[[:space:]]"
+    register: out316
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      '127.0.0.1:25' not in out316.stdout 
+    tags:
+      - scored
+      - section3.16

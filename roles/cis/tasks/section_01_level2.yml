@@ -1,0 +1,229 @@
+---
+#
+#   2017
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+
+  - name: 1.1.18 Disable Mounting of cramfs Filesystems (Not Scored)
+    shell: /sbin/modprobe -n -v cramfs
+    register: modconf
+    failed_when: > 
+     "install /bin/true" not in modconf.stdout and "Module cramfs not found" not in modconf.stderr
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.1
+      - section1.1.18
+
+  - name: 1.1.19 Disable Mounting of freevxfs Filesystems (Not Scored)
+    shell: modprobe -n -v freevxfs
+    register: modconf
+    failed_when: > 
+     "install /bin/true" not in modconf.stdout and "Module freevxfs not found" not in modconf.stderr
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.1
+      - section1.1.19
+
+  - name: 1.1.20 Disable Mounting of jffs2 Filesystems (Not Scored)
+    shell: modprobe -n -v jffs2
+    register: modconf
+    failed_when: > 
+     "install /bin/true" not in modconf.stdout and "Module jffs2 not found" not in modconf.stderr
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.1
+      - section1.1.20
+
+  - name: 1.1.21 Disable Mounting of hfs Filesystems (Not Scored)
+    shell: modprobe -n -v hfs
+    register: modconf
+    failed_when: > 
+     "install /bin/true" not in modconf.stdout and "Module hfs not found" not in modconf.stderr
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.1
+      - section1.1.21
+
+  - name: 1.1.22 Disable Mounting of hfsplus Filesystems (Not Scored)
+    shell: modprobe -n -v hfsplus
+    register: modconf
+    failed_when: > 
+     "install /bin/true" not in modconf.stdout and "Module hfsplus not found" not in modconf.stderr
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.1
+      - section1.1.22
+
+  - name: 1.1.23 Disable Mounting of squashfs Filesystems (Not Scored)
+    shell: modprobe -n -v squashfs
+    register: modconf
+    failed_when: > 
+     "install /bin/true" not in modconf.stdout and "Module squashfs not found" not in modconf.stderr
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.1
+      - section1.1.23
+
+  - name: 1.1.24 Disable Mounting of udf Filesystems (Not Scored)
+    shell: modprobe -n -v udf
+    register: modconf
+    failed_when: > 
+     "install /bin/true" not in modconf.stdout and "Module udf not found" not in modconf.stderr
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.1
+      - section1.1.24
+
+  - name: 1.2.4 Disable the rhnsd Daemon (Not Scored)
+    shell: chkconfig --list rhnsd 
+    register: rhnsd
+    failed_when: >
+     ':on'  in rhnsd.stdout 
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - notscored
+      - section1.2
+      - section1.2.4
+
+  - name: 1.3.1 Install AIDE (Scored)
+    shell: rpm -q aide
+    register: aide
+    failed_when: >
+      rhnsd.rc != 0
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.3
+      - section1.3.1
+
+  - name: 1.3.2 Implement Periodic Execution of File Integrity (Scored)
+    shell:  crontab -u root -l | grep aide
+    register: check_aide
+    failed_when: >
+     '/usr/sbin/aide --check' not in check_aide.stdout 
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.3
+      - section1.3.2
+
+  - name: 1.4.1 Enable SELinux in /etc/grub.conf (Scored)
+    shell: grep 'selinux=0' /etc/grub.conf
+    register: selinux
+    failed_when: >
+     'selinux=0' in  selinux.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.4
+      - section1.4.1
+
+  - name: 1.4.1 Enable SELinux in /etc/grub.conf (Scored)
+    shell: grep 'enforcing=0' /etc/grub.conf
+    register: selinux_en
+    failed_when: >
+     'enforcing=0' in  selinux_en.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.4
+      - section1.4.1
+
+  - name: 1.4.2 Set the SELinux State (set in file) (Scored)
+    shell: grep 'SELINUX=enforcing' /etc/selinux/config
+    register: set_selinux
+    failed_when: >
+     'SELINUX=enforcing' not in  set_selinux.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.4
+      - section1.4.2
+
+  - name: 1.4.2 Set the SELinux State (sestatus) (Scored)
+    shell: sestatus 
+    register: set_selinux
+    failed_when: >
+     'enforcing' not in  set_selinux.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.4
+      - section1.4.2
+
+  - name: 1.4.3 Set the SELinux Policy (Scored)
+    shell: sestatus
+    register: pol_selinux
+    failed_when: >
+     'enforcing' not in  pol_selinux.stdout and 'targeted' not in pol_selinux.stdout
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.4
+      - section1.4.3
+
+  - name: 1.4.4 Remove SETroubleshoot (Scored)
+    shell: rpm -q setroubleshoot
+    register:  setroubleshoot
+    failed_when: setroubleshoot.rc == 0
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.4
+      - section1.4.4
+
+  - name: 1.4.5 Remove MCS Translation Service (mcstrans) (Scored)
+    shell: rpm -q mcstrans
+    register:  mcstrans
+    failed_when: mcstrans.rc == 0
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.4
+      - section1.4.5
+
+  - name: 1.4.6 Check for unconfined daemons (Scored)
+    shell: ps -eZ | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'
+    register:  undaemons
+    failed_when: >
+     undaemons.stdout != ''
+    ignore_errors: true
+    changed_when: false
+    tags:
+      - scored
+      - section1.4
+      - section1.4.6

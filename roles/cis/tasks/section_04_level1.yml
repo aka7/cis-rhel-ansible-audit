@@ -1,0 +1,313 @@
+---
+#
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+
+  - name: 4.1.1 Disable IP Forwarding (Scored)
+    shell: sysctl net.ipv4.ip_forward
+    register: out411
+    failed_when: >
+      "net.ipv4.ip_forward = 0" not in out411.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section4.1
+      - section4.1.1
+
+  - name: 4.1.2 Disable Send Packet Redirects (Scored)
+    shell: sysctl net.ipv4.conf.all.send_redirects;  sysctl net.ipv4.conf.default.send_redirects
+    register: out412
+    failed_when: >
+      "net.ipv4.conf.all.send_redirects = 0" not in out412.stdout or "net.ipv4.conf.default.send_redirects = 0" not in out412.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section4.1
+      - section4.1.2
+
+  - name: 4.2.1 Disable Source Routed Packet Acceptance (Scored)
+    shell: sysctl net.ipv4.conf.all.accept_source_route;  sysctl net.ipv4.conf.default.accept_source_route
+    register: out421
+    failed_when: >
+      "net.ipv4.conf.all.accept_source_route = 0" not in out421.stdout or 
+      "net.ipv4.conf.default.accept_source_route = 0" not in out421.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section4.2
+      - section4.2.1
+
+  - name: 4.2.2 Disable ICMP Redirect Acceptance (Scored)
+    shell: sysctl net.ipv4.conf.all.accept_redirects;  sysctl net.ipv4.conf.default.accept_redirects
+    register: out422
+    failed_when: >
+      "net.ipv4.conf.all.accept_redirects = 0" not in out422.stdout or 
+      "net.ipv4.conf.default.accept_redirects = 0" not in out422.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section4.2
+      - section4.2.2
+
+  - name: 4.2.4 Log Suspicious Packets (Scored)
+    shell: sysctl net.ipv4.conf.all.log_martians; sysctl net.ipv4.conf.default.log_martian
+    register: out424
+    failed_when: >
+      "net.ipv4.conf.all.log_martians = 1" not in out424.stdout or 
+      "net.ipv4.conf.default.log_martians = 1" not in out424.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section4.2
+      - section4.2.4
+
+  - name: 4.2.5 Enable Ignore Broadcast Requests (Scored)
+    shell: sysctl net.ipv4.icmp_echo_ignore_broadcasts
+    register: out425
+    failed_when: >
+      "net.ipv4.icmp_echo_ignore_broadcasts = 1" not in out425.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section4.2
+      - section4.2.5
+
+  - name: 4.2.6 Enable Bad Error Message Protection (Scored)
+    shell: sysctl net.ipv4.icmp_ignore_bogus_error_responses
+    register: out426
+    failed_when: >
+      "net.ipv4.icmp_ignore_bogus_error_responses = 1" not in out426.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section4.2
+      - section4.2.6
+
+  - name: 4.2.8 Enable TCP SYN Cookies (Scored)
+    shell: sysctl net.ipv4.tcp_syncookies
+    register: out428
+    failed_when: >
+      "net.ipv4.tcp_syncookies = 1" not in out428.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section4.2
+      - section4.2.8
+
+  - name: 4.4.1.1 Disable IPv6 Router Advertisements (Not Scored)
+    shell: sysctl net.ipv6.conf.all.accept_ra;  sysctl net.ipv6.conf.default.accept_ra
+    register: out4411
+    failed_when: >
+      "net.ipv6.conf.all.accept_ra = 0" not in out4411.stdout or 
+      "net.ipv6.conf.default.accept_ra = 0" not in out4411.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - notscored
+      - section4.4
+      - section4.4.1
+      - section4.4.1.1
+
+  - name: 4.4.1.2 Disable IPv6 Redirect Acceptance (Not Scored)
+    shell: sysctl net.ipv6.conf.all.accept_redirects;  sysctl net.ipv6.conf.default.accept_redirects
+    register: out429
+    failed_when: >
+      "net.ipv6.conf.all.accept_redirects = 0" not in out429.stdout or 
+      "net.ipv6.conf.default.accept_redirects = 0" not in out429.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - notscored
+      - section4.4
+      - section4.4.1
+      - section4.4.1.2
+
+  - name: 4.4.2 Disable IPv6 (disable in network config) (Not Scored)
+    shell: grep NETWORKING_IPV6 /etc/sysconfig/network | awk -F= '{print $NF}'
+    register: ipv6_enable
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'no' not in ipv6_enable.stdout and ipv6_enable.stdout != ''
+    tags:
+      - notscored
+      - section4.4
+      - section4.4.2
+
+  - name: 4.4.2 Disable IPv6 (disable in network config) (Not Scored)
+    shell: grep IPV6INIT /etc/sysconfig/network | awk -F= '{print $NF}'
+    register: ipv6_enable
+    failed_when: >
+      'no' not in ipv6_enable.stdout and ipv6_enable.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - notscored
+      - section4.4
+      - section4.4.2
+
+  - name: 4.5.1 Install TCP Wrappers (Not Scored)
+    shell: rpm -q tcp_wrappers
+    register: out451
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'is not installed' not in out451.stdout 
+    tags:
+      - notscored
+      - section4.5
+      - section4.5.1
+
+
+  - stat:
+      path: /etc/hosts.allow
+    register: hostsallow
+    changed_when: false
+    ignore_errors: True
+    tags:
+      - notscored
+      - section4.5
+      - section4.5.2
+  - shell: ls -l /etc/hosts.allow
+    register: hostsallowperm
+    changed_when: false
+    ignore_errors: True
+    tags:
+      - notscored
+      - section4.5
+      - section4.5.2
+  - stat:
+      path: /etc/hosts.deny
+    register: hostsdeny
+    changed_when: false
+    ignore_errors: True
+    tags:
+      - scored
+      - section4.5
+      - section4.5.5
+
+  - shell: ls -l /etc/hosts.deny
+    register: hostsdenyperm
+    changed_when: false
+    ignore_errors: True
+    tags:
+      - scored
+      - section4.5
+      - section4.5.5
+
+  - name: 4.5.2 check /etc/hosts.allow (Not Scored)
+    fail: msg="check and verify hosts.allow"
+    failed_when: >
+      hostsallow.stat.exists == False
+    changed_when: false
+    ignore_errors: True
+    tags:
+      - notscored
+      - section4.5
+      - section4.5.2
+
+  - name: 4.5.3 Verify Permissions on /etc/hosts.allow (Scored)
+    fail: 
+      msg: "{{ hostsallowperm.stdout_lines }}"
+    failed_when: >
+      hostsallow.stat.uid != 0 or hostsallow.stat.gid != 0 or hostsallow.stat.mode != '0644'
+    changed_when: false
+    ignore_errors: True
+    tags:
+      - scored
+      - section4.5
+      - section4.5.3
+
+  - name: 4.5.4 Check /etc/hosts.deny (Not Scored)
+    shell: "grep 'ALL: ALL' /etc/hosts.deny"
+    register: out454
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'ALL: ALL' not in out454.stdout
+    tags:
+      - notscored
+      - section4.5
+      - section4.5.4
+
+  - name: 4.5.5 Verify Permissions on /etc/hosts.deny (Scored)
+    fail: 
+      msg: "{{ hostsdenyperm.stdout_lines }}"
+    failed_when: >
+      hostsdeny.stat.uid != 0 or hostsdeny.stat.gid != 0 or hostsdeny.stat.mode != '0644'
+    changed_when: false
+    ignore_errors: True
+    tags:
+      - scored
+      - section4.5
+      - section4.5.5
+
+  - shell: grep 'install {{ item }} /bin/true' /etc/modprobe.d/*
+    register: modprobe
+    with_items:
+      - dccp
+      - sctp
+      - rds
+      - tipc
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - notscored
+      - section4.6
+      - section4.6.1
+      - section4.6.2
+      - section4.6.3
+      - section4.6.4
+
+  - name: "4.6 - Disable uncommon network protocols ( dccp/sctp/rds/tipc ) (Not Scored)"
+    debug:
+      msg: "{{ modprobe.results }}"
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - notscored
+      - section4.6
+      - section4.6.1
+      - section4.6.2
+      - section4.6.3
+      - section4.6.4
+
+  - name: 4.7 Enable IPtables (Scored)
+    shell: chkconfig --list iptables
+    register: out47
+    changed_when: false
+    failed_when: >
+      out47.rc != 0 or '3:on' not in out47.stdout 
+    tags:
+      - scored
+      - section4.7
+
+  - name: 4.8 Enable IP6tables (Not Scored)
+    shell: chkconfig --list ip6tables
+    register: out48
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      out48.rc == 0 and ':on' in out48.stdout 
+    tags:
+      - notscored
+      - section4.8
