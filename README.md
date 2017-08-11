@@ -6,6 +6,8 @@ This is an ansible playbook for auditing a system running Red Hat Enterprise Lin
 
 Insipired by https://github.com/major/cis-rhel-ansible but instead of applying the changes, this will just report if a system passes or fails for each task.
 
+If you want to remedy the failed tasks, see https://github.com/major/cis-rhel-ansible
+
 # NOTE
 this project is still in progress,  added following sections so far
 - section1
@@ -82,6 +84,7 @@ TODO:
   - add missing sections (6, 7 and 8)
   - work on custom_loger to output in json
   - create reports based on the output (html)
+  - show remedy options
 
 # Limitations
 requires ansible > 2.1
