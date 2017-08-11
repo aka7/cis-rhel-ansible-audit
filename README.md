@@ -7,7 +7,7 @@ This is an ansible playbook for auditing a system running Red Hat Enterprise Lin
 Insipired by https://github.com/major/cis-rhel-ansible but instead of applying the changes, this will just report if a system passes or fails for each task.
 
 # NOTE
-this project is still in profject,  added following sections so far
+this project is still in progress,  added following sections so far
 - section1
 - section2
 - section3

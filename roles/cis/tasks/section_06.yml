@@ -14,20 +14,12 @@
 #   limitations under the License.
 #
 
-  - include: section_01.yml
-    tags: section1
+  - include: section_06_level1.yml
+    tags:
+      - section6
+      - level1
 
-  - include: section_02.yml
-    tags: section2
-
-  - include: section_03.yml
-    tags: section3
-
-  - include: section_04.yml
-    tags: section4
-
-  - include: section_05.yml
-    tags: section5
-
-  - include: section_06.yml
-    tags: section6
+  - include: section_06_level2.yml
+    tags:
+      - section6
+      - level2
