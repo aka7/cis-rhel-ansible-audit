@@ -94,7 +94,7 @@ class CallbackModule(CallbackBase):
                 if data['failed'] == True:
                   status='FAIL'
                   keyfound=True
-                  if type(msg) == list:
+                  if type(msg) == list or type(msg) == bool:
                     msg=str(msg)
                   if stdout == '' and  stderr == '':
                     output=msg
@@ -102,6 +102,8 @@ class CallbackModule(CallbackBase):
                   status='PASS'
                   keyfound=True
                   if type(msg) == list:
+                    msg=str(msg)
+                  if type(msg) == bool:
                     msg=str(msg)
                   if stdout == '' and stderr == '':
                     if msg != []:
@@ -226,12 +228,15 @@ class CallbackModule(CallbackBase):
                     stdout = msg
                   elif msg != '':
                     # else it could be just a debug msg, so just display debug msg
+                   # check if its a boolean, if so turn into string
+                    if type(msg) == bool:
+                      status = str(msg)
                     # N/A on any task which is not applicable
-                    if msg == "N/A":
+                    elif msg == "N/A":
   		      status = 'N/A'
                     else:
   		      status = 'VERIFY'
-                    stdout = msg
+                    stdout = str(msg)
                   else:
                     status=''
                     stdout=''
