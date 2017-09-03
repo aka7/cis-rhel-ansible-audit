@@ -4,6 +4,7 @@ fstab: /etc/fstab
 mailconfig: /etc/exim/exim.conf
 auditdconf: /etc/audit/auditd.conf
 auditd_rules: /etc/audit/audit.rules
+sshd_config: /etc/ssh/sshd_config
 
 syslog_dest: "{{ '10.183.195.60' if ansible_domain == 'akait.local' else '10.167.195.60' }}"
 puppet_server: "{{ 'puppet.akait.local' if ansible_domain == 'akait.local' else 'puppetpp.akaitpp.local' if ansible_domain == 'akaitpp.local' else 'akaittd.local'}}"
