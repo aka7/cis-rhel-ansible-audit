@@ -15,6 +15,7 @@ this project is still in progress,  added following sections so far
 - section3
 - section4
 - section5
+- section6
 
 ### setup
 add  hosts in your ansible file, i.e test-hosts
