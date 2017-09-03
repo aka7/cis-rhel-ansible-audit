@@ -98,201 +98,356 @@
       - section6.1
       - section6.1.9
 
+  - stat:
+      path: /etc/at.deny
+    register: atdeny
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section6.1
+      - section6.1.10
+  - stat:
+      path: /etc/at.allow
+    changed_when: false
+    ignore_errors: true
+    register: atallow
+    tags:
+      - scored
+      - section6.1
+      - section6.1.10
   - name: 6.1.10 Restrict at Daemon (Scored)
-    debug: msg="TODO"
+    shell: 'ls -l /etc/at.deny '
+    failed_when: > 
+      atdeny.stat.exists == True 
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section6.1
+      - section6.1.10
+  - name: 6.1.10 Restrict at Daemon (Scored)
+    shell: stat -L -c "%a %u %g" /etc/at.allow | egrep ".00 0 0"
     tags:
       - scored
       - section6.1
       - section6.1.10
 
-  - name: 6.1.10 Restrict at Daemon (Scored)
-    debug: msg="TODO"
+  - stat:
+      path: /etc/cron.deny
+    register: crondeny
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.1
-      - section6.1.10
-
-  - name: 6.1.11 Restrict at/cron to Authorized Users (Scored)
-    debug: msg="TODO"
+      - section6.1.11
+  - stat:
+      path: /etc/cron.allow
+    changed_when: false
+    ignore_errors: true
+    register: cronallow
     tags:
       - scored
       - section6.1
       - section6.1.11
 
   - name: 6.1.11 Restrict at/cron to Authorized Users (Scored)
-    debug: msg="TODO"
+    shell: ls -l  /etc/cron.deny
+    failed_when: crondeny.stat.exists == True
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section6.1
+      - section6.1.11
+
+  - name: 6.1.11 Restrict at/cron to Authorized Users (Scored)
+    shell: echo '/etc/cron.allow' && stat -L -c "%a %u %g" /etc/cron.allow | egrep ".00 0 0"
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section6.1
+      - section6.1.11
+
+  - name: 6.1.11 Restrict at/cron to Authorized Users (Scored)
+    shell: stat -L -c "%a %u %g" /etc/at.allow| egrep ".00 0 0"
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.1
       - section6.1.11
 
   - name: 6.2.1 Set SSH Protocol to 2 (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^Protocol" {{ sshd_config }}'
+    register: out_6_2_1
+    failed_when: >
+      'Protocol 2' not in out_6_2_1.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.1
 
   - name: 6.2.2 Set LogLevel to INFO (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^LogLevel" {{ sshd_config }}'
+    register: out_6_2_2
+    failed_when: >
+      'LogLevel INFO' not in out_6_2_2.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.2
 
+  - stat:
+      path: '{{ sshd_config }}'
+    register: sshdconfig
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section6.2
+      - section6.2.3
+
   - name: 6.2.3 Set Permissions on /etc/ssh/sshd_config (Scored)
-    debug: msg="TODO"
+    shell: 'ls -l {{ sshd_config }}'
+    failed_when: >
+      sshdconfig.stat.uid != 0 and sshdconfig.stat.gid != 0 and sshdconfig.stat.mode != 0600
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.3
 
   - name: 6.2.4 Disable SSH X11 Forwarding (Scored)
-    debug: msg="TODO"
-    notify: Reload sshd
+    shell: 'grep  "^X11Forwarding" {{ sshd_config }}'
+    register: out_6_2_4
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      'X11Forwarding no' not in out_6_2_4.stdout
     tags:
       - scored
       - section6.2
       - section6.2.4
 
   - name: 6.2.5 Set SSH MaxAuthTries to 4 or Less (Scored)
-    debug: msg="TODO"
+    shell: 'grep  "^MaxAuthTries" {{ sshd_config }}'
+    register: out_6_2_5
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      "MaxAuthTries 4" not in out_6_2_5.stdout
     tags:
       - scored
       - section6.2
       - section6.2.5
 
   - name: 6.2.6 Set SSH IgnoreRhosts to Yes (Scored)
-    debug: msg="TODO"
+    shell: 'grep  "^IgnoreRhosts" {{ sshd_config }}'
+    register: out_6_2_6
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      "IgnoreRhosts yes" not in out_6_2_6.stdout
     tags:
       - scored
       - section6.2
       - section6.2.6
 
   - name: 6.2.7 Set SSH HostbasedAuthentication to No (Scored)
-    debug: msg="TODO"
+    shell: 'grep  "^HostbasedAuthentication" {{ sshd_config }}'
+    register: out_6_2_7
+    changed_when: false
+    ignore_errors: true
+    failed_when: >
+      "HostbasedAuthentication no" not in out_6_2_7.stdout
     tags:
       - scored
       - section6.2
       - section6.2.7
 
   - name: 6.2.8 Disable SSH Root Login (Scored)
-    debug: msg="TODO"
+    shell: 'grep  "^PermitRootLogin" {{ sshd_config }}'
+    register: out_6_2_8
+    failed_when: >
+      "PermitRootLogin no" not in out_6_2_8.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.8
 
   - name: 6.2.9 Set SSH PermitEmptyPasswords to No (Scored)
-    debug: msg="TODO"
+    shell: 'grep  "^PermitEmptyPasswords" {{ sshd_config }}'
+    register: out_6_2_9
+    failed_when: >
+      "PermitEmptyPasswords no" not in out_6_2_9.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.9
 
   - name: 6.2.10 Do Not Allow Users to Set Environment Options (Scored)
-    debug: msg="TODO"
+    shell: 'grep  "^PermitUserEnvironment" {{ sshd_config }}'
+    register: out_6_2_10
+    failed_when: >
+      "PermitUserEnvironment no" not in out_6_2_10.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.10
 
   - name: 6.2.11 Use Only Approved Cipher in Counter Mode (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^Ciphers" {{ sshd_config }}'
+    register: out_6_2_11
+    failed_when: >
+      "Ciphers aes128-ctr,aes192-ctr,aes256-ctr" not in out_6_2_11.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.11
 
   - name: 6.2.12 Set Idle Timeout Interval for User Login (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^ClientAliveInterval" {{ sshd_config }}'
+    register: out_6_2_12
+    failed_when: >
+      "ClientAliveInterval 300" not in out_6_2_12.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.12
 
   - name: 6.2.12 Set Idle Timeout Interval for User Login (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^ClientAliveCountMax" {{ sshd_config }}'
+    register: out_6_2_12_2
+    failed_when: >
+      "ClientAliveCountMax 0" not in out_6_2_12_2.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.12
 
   - name: 6.2.13 Limit Access via SSH (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^AllowUsers" {{ sshd_config }}'
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.13
 
   - name: 6.2.13 Limit Access via SSH (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^AllowGroups" {{ sshd_config }}'
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.13
 
   - name: 6.2.13 Limit Access via SSH (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^DenyUsers" {{ sshd_config }}'
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.13
 
   - name: 6.2.13 Limit Access via SSH (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^DenyGroups" {{ sshd_config }}'
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.13
 
   - name: 6.2.14 Set SSH Banner (Scored)
-    debug: msg="TODO"
+    shell: 'grep "^Banner" {{ sshd_config }}'
+    register: out_6_2_14
+    failed_when: >
+      "Banner /etc/banner" not in out_6_2_14.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.2
       - section6.2.14
 
   - name: 6.3.1 Upgrade Password Hashing Algorithm to SHA-512 (Scored)
-    debug: msg="TODO"
+    shell: authconfig --test | grep hashing | grep sha512
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.3
       - section6.3.1
 
-  - name: 6.3.1 Upgrade Password Hashing Algorithm to SHA-512 (Scored)
-    debug: msg="TODO"
-    tags:
-      - scored
-      - section6.3
-      - section6.3.1
-
-  - name: 6.3.2 - 6.3.4 Configure PAM (Scored)
-    debug: msg="TODO"
-    tags:
-      - scored
-      - section6.3
-      - section6.3.2
-      - section6.3.3
-      - section6.3.4
-
-  - name: 6.3.2 - 6.3.4 Configure PAM (Scored)
-    debug: msg="TODO"
+  - name: 6.3.2 Set Password Creation Requirement Parameters Using pam_cracklib (Scored) 
+    shell: 'grep pam_cracklib.so /etc/pam.d/system-auth'
+    register: out_6_3_2
+    failed_when: >
+      "password required pam_cracklib.so try_first_pass retry=3 minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" not in out_6_3_2.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.3
       - section6.3.2
+
+  - name: 6.3.3 Set Lockout for Failed Password Attempts (Not Scored)
+    debug: msg="TODO"
+    tags:
+      - scored
+      - section6.3
       - section6.3.3
+
+  - name: 6.3.4 Limit Password Reuse (Scored)
+    shell: 'grep "remember" /etc/pam.d/system-auth'
+    register: out_6_3_4
+    failed_when: >
+      "password sufficient pam_unix.so remember=5" not in out_6_3_4.stdout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section6.3
       - section6.3.4
 
   - name: 6.4 Restrict root login to system console (Not Scored)
-    debug: msg="Too restrictive for most environments."
+    shell:  cat /etc/securetty
+    changed_when: false
+    ignore_errors: true
     tags:
       - notscored
       - section6.4
 
   - name: 6.5 Restrict Access to the su Command (Scored)
-    debug: msg="TODO"
+    shell: 'grep pam_wheel.so /etc/pam.d/su'
+    register: out_6_5
+    failed_when: >
+      '^auth required pam_wheel.so use_uid' not in out_6_5.stdout
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.5
