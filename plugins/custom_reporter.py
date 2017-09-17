@@ -16,7 +16,7 @@
 # Made changes to it suites what we trying achieve for this pci audit
 # change to write the output to file.
 # summary of each task, pass or fail, or verify. 
-# writes output of each server in own file, log/${hostname}.txt and summary of all tasks in summary.csv
+# writes output of each server in own file, log/${hostname}.json and summary of all tasks in summary.csv
 # TODO: better gui type reporting based on the csv output, so can be shared with security team for review
 
 from __future__ import (absolute_import, division, print_function)
@@ -28,22 +28,27 @@ try:
 except ImportError:
     import json
 import time
+import os
 
 # to record taskname per server
 taskid=''
-
 class CallbackModule(CallbackBase):
+    def create_logs(self):
+        self.datetime=time.strftime("%Y-%m-%d_%H_%M")
+        if not (os.path.exists("reports/raw")):
+          os.makedirs('reports/raw') 
+        if not (os.path.exists('reports/raw/'+self.datetime)):
+          os.makedirs('reports/raw/'+self.datetime) 
+        self.summary = open('reports/raw/'+self.datetime+'/summary_report_'+self.datetime+'.csv', 'w')
     def custom_reporter(self, data, host):
-        perhost_file = open('log/'+host+'.txt', 'a')
-        summary = open('log/summary_report.csv', 'a')
-        #print (json.dumps(data,indent=4))
+        self.perhost_file = open('reports/raw/'+self.datetime+'/'+host+'_'+self.datetime+'.json', 'a')
         try:
              module_name=data['invocation']["module_name"]
         except:
              module_name=None
 
         if module_name == 'setup':
-             # this is only availble in setup task, so you use to wirte host details, whcih will be at the start
+             # this is only availble in setup task, so you use to wirte host details, which will be at the start
              datetime=time.strftime("%Y-%m-%d %H:%M")
              try:
                 ip=data['ansible_facts']['facter_ipaddress']
@@ -70,8 +75,13 @@ class CallbackModule(CallbackBase):
           if type(data) == dict:
             status='UNKNOWN'
             output=''
+            cmd=''
             keyfound=False
             # get fields we are interested in 
+            if 'cmd' in data.keys():
+              cmd=self._format_output(data['cmd'],'cmd')
+            else:
+              cmd=""
             if 'stdout' in data.keys():
               stdout=self._format_output(data['stdout'],'stdout')
             else:
@@ -132,8 +142,12 @@ class CallbackModule(CallbackBase):
             output = output+'\n'+stdout +'\n' + stderr
             if self.taskid != '':
               #print("\n{0}, {1}".format(host,status))
-              perhost_file.write("\n{0}, {1}\n {2}".format(self.taskid,status,output))
-              summary.write("\n{0}, {1}, {2}'".format(self.taskid,host,status))
+              outdata = { self.taskid: { 'status': status, 'output': output, 'cmd': cmd  }}
+              #perhost_file.write("\n{0}, {1}".format(self.taskid,status))
+              #perhost_file.write("\ncmd: {0}".format(cmd))
+              #perhost_file.write("\noutput: {0}".format(output))
+              self.summary.write("\n{0}, {1}, {2}'".format(self.taskid,host,status))
+              self.perhost_file.write(json.dumps(outdata)+'\n')
 
     def _format_output(self, output, field):
         # Strip unicode
@@ -274,7 +288,7 @@ class CallbackModule(CallbackBase):
         self.custom_reporter(res,host)
 
     def playbook_on_start(self):
-        pass
+        self.create_logs()
 
     def playbook_on_notify(self, host, handler):
         pass

@@ -31,12 +31,12 @@ some tasks may take a long time to run, check the scripts in files/bin
 
 # LOGS
 
-Custom logs, if custom_reporter plugin is enabled, you can find logs in log dir if log dir doesn't exists, create it first
+Custom logs, if custom_reporter plugin is enabled, you can find logs in reports/raw dir.  if dir doesn't exists, it will create it.
 
-log/${hostname}.txt
-log/summary_report.csv
+reports/raw/${date}/${hostname}-${date}.json
+reports/raw/${date}/summary_report_${date}.csv
 
-Logs will always be apended, so if you want clean logs, rm log/* then run playbook.
+Logs will always with date and time of run.
 
 example output, for summary_report.csv, will look like his
 
@@ -75,6 +75,15 @@ TASK: cis : 5.2.18 Make the Audit Configuration Immutable (Scored), alif.aka47.l
 
 ```
 
+To generate nice htmlt output of the report, run report.py
+
+```
+python report.py test-hosts  > reports/pci_report.html
+
+```
+open file in browser, or place in www dir on a webserver to view.
+
+
 # NOTES On Custom_reporter plugin
 
   - Logs only if a task has a name
@@ -82,9 +91,9 @@ TASK: cis : 5.2.18 Make the Audit Configuration Immutable (Scored), alif.aka47.l
 
 
 TODO:
-  - add missing sections (6, 7 and 8)
-  - work on custom_loger to output in json
-  - create reports based on the output (html)
+  - add missing sections ( 7 and 8)
+  - work on custom_loger to output in json (DONE)
+  - create reports based on the output (html)  (IN PROGRESS)
   - show remedy options
 
 # Limitations
