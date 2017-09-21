@@ -6,8 +6,11 @@ import json
 import sys
 import os
 import csv
+from optparse import OptionParser
+
 
 raw_log_path='reports/raw'
+report_path = 'reports/html'
 
 def getRuns(reports_path):
   dates =  [f for f in os.listdir(reports_path) if os.path.isdir(os.path.join(raw_log_path, f))]
@@ -44,26 +47,42 @@ def getHostStatus(datestamp):
      hosts[h]=status
   return hosts
 
-print "<html>"
-print "<head>"
-print '  <meta name="viewport" content="width=device-width, initial-scale=1">'
-print '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">'
-print '  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>'
-print '  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>'
-print '</head>'
-print '<body>'
-print '<center><h3> cis scan report</h3></center>' 
+
+parser = OptionParser()
+parser.add_option("-i", "--inventory", dest="inventoryfile",
+                  help="inventory list of hostnames")
+
+(options, args) = parser.parse_args()
+
+
+if not options.inventoryfile:
+	parser.print_help()
+	sys.exit(1)
+
+if not os.path.exists(report_path):
+  os.mkdir(report_path)
+htmlfile = open(report_path+'/cis_report.html','w') 
+
+htmlfile.write("<html>")
+htmlfile.write( "<head>")
+htmlfile.write( '  <meta name="viewport" content="width=device-width, initial-scale=1">')
+htmlfile.write( '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">')
+htmlfile.write( '  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>')
+htmlfile.write( '  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>')
+htmlfile.write( '</head>')
+htmlfile.write( '<body>')
+htmlfile.write( '<center><h3> cis scan report</h3></center>' )
 
 run_list=getRuns(raw_log_path)
-host_list=getHosts('test-hosts')
+host_list=getHosts(options.inventoryfile)
 count=1
 for host in host_list:
   hostname=host.strip()
   reportcount=1
   reportstatus=''
-  print '<div class="container">'
-  print '<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#host'+str(count)+'">'+hostname,reportstatus+'</button>'
-  print '<div id="host'+str(count)+'" class="collapse">'
+  htmlfile.write( '<div class="container">')
+  htmlfile.write( '<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#host'+str(count)+'">'+hostname+''+reportstatus+'</button>')
+  htmlfile.write( '<div id="host'+str(count)+'" class="collapse">')
   for rundate in run_list:
       runstatus = getHostStatus(rundate)
       btn_class = 'btn-info'
@@ -76,16 +95,16 @@ for host in host_list:
           btn_class='btn-success'
       except KeyError as err:
           btn_class='btn-disabled'
-      print '<div class="container">'
-      print '<button type="button" class="btn '+btn_class+'" data-toggle="collapse" data-target="#report_'+str(count)+''+str(reportcount)+'">'+rundate+'</button>'
-      print '<div id="report_'+str(count)+''+str(reportcount)+'" class="collapse">'
-      print '<div class="container">'
-      print '<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#reportfailed_'+str(count)+''+str(reportcount)+'">FAILED</button>'
-      print '<div id="reportfailed_'+str(count)+''+str(reportcount)+'" class="collapse">'
-      print '<div class="table-responsive">'
-      print "<table class='table'>"
-      print "<tr><td>Date of run: "+rundate+"</td>"
-      print "<tr bgcolor=grey><th> control</th> <th> status </th> <th>command</th> <th>output</th></tr>"
+      htmlfile.write( '<div class="container">')
+      htmlfile.write( '<button type="button" class="btn '+btn_class+'" data-toggle="collapse" data-target="#report_'+str(count)+''+str(reportcount)+'">'+rundate+'</button>')
+      htmlfile.write( '<div id="report_'+str(count)+''+str(reportcount)+'" class="collapse">')
+      htmlfile.write( '<div class="container">')
+      htmlfile.write( '<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#reportfailed_'+str(count)+''+str(reportcount)+'">FAILED</button>')
+      htmlfile.write( '<div id="reportfailed_'+str(count)+''+str(reportcount)+'" class="collapse">')
+      htmlfile.write( '<div class="table-responsive">')
+      htmlfile.write( "<table class='table'>")
+      htmlfile.write( "<tr><td>Date of run: "+rundate+"</td>")
+      htmlfile.write( "<tr bgcolor=grey><th> control</th> <th> status </th> <th>command</th> <th>output</th></tr>")
       try:
         with open(raw_log_path+'/'+rundate+'/'+hostname+'_'+rundate+'.json','r') as f:
           data = f.readlines()
@@ -95,23 +114,23 @@ for host in host_list:
               colour='lightgreen'
               if result['status'] == 'FAIL':
                 colour='red'
-                print "<tr bgcolor="+colour+"><td>",control,"</td>", "<td>",result['status'],"</td>"
-                print "<td>",result['cmd'],"</td>"
-                print "<td>",result['output'],"</td></tr>"
+                htmlfile.write( '<tr bgcolor="+colour+"><td>'+control+'</td> <td>'+result["status"]+'</td>')
+                htmlfile.write( "<td>"+result['cmd']+"</td>")
+                htmlfile.write( "<td>"+result['output']+"</td></tr>")
       except IOError as err:
-              print "<tr><td>no run for this date</td> <td>",err,"</td> </tr>"
-      print "</table>"
-      print '</div>'
-      print '</div>'
-      print '</div>'
+              htmlfile.write( "<tr><td>no run for this date</td> <td>"+err+"</td> </tr>")
+      htmlfile.write( "</table>")
+      htmlfile.write( '</div>')
+      htmlfile.write( '</div>')
+      htmlfile.write( '</div>')
 
-      print '<div class="container">'
-      print '<button type="button" class="btn btn-success" data-toggle="collapse" data-target="#reportpass_'+str(count)+''+str(reportcount)+'">PASS</button>'
-      print '<div id="reportpass_'+str(count)+''+str(reportcount)+'" class="collapse">'
-      print '<div class="table-responsive">'
-      print "<table class='table'>"
-      print "<tr><td>Date of run: "+rundate+"</td>"
-      print "<tr bgcolor=grey><th> control</th> <th> status </th> <th>command</th> <th>output</th></tr>"
+      htmlfile.write( '<div class="container">')
+      htmlfile.write( '<button type="button" class="btn btn-success" data-toggle="collapse" data-target="#reportpass_'+str(count)+''+str(reportcount)+'">PASS</button>')
+      htmlfile.write( '<div id="reportpass_'+str(count)+''+str(reportcount)+'" class="collapse">')
+      htmlfile.write( '<div class="table-responsive">')
+      htmlfile.write( "<table class='table'>")
+      htmlfile.write( "<tr><td>Date of run: "+rundate+"</td>")
+      htmlfile.write( "<tr bgcolor=grey><th> control</th> <th> status </th> <th>command</th> <th>output</th></tr>")
       try:
         with open(raw_log_path+'/'+rundate+'/'+hostname+'_'+rundate+'.json','r') as f:
           data = f.readlines()
@@ -121,23 +140,23 @@ for host in host_list:
               colour='lightgreen'
               if result['status'] == 'PASS':
                 colour='green'
-                print "<tr bgcolor="+colour+"><td>",control,"</td>", "<td>",result['status'],"</td>"
-                print "<td>",result['cmd'],"</td>"
-                print "<td>",result['output'],"</td></tr>"
+                htmlfile.write( "<tr bgcolor="+colour+"><td>"+control+"</td> <td>"+result['status']+"</td>")
+                htmlfile.write( "<td>"+result['cmd']+"</td>")
+                htmlfile.write( "<td>"+result['output']+"</td></tr>")
       except IOError as err:
-              print "<tr><td>no run for this date</td> <td>",err,"</td> </tr>"
-      print "</table>"
-      print '</div>'
-      print '</div>'
-      print '</div>'
+              htmlfile.write( "<tr><td>no run for this date</td> <td>",err,"</td> </tr>")
+      htmlfile.write( "</table>")
+      htmlfile.write( '</div>')
+      htmlfile.write( '</div>')
+      htmlfile.write( '</div>')
 
-      print '<div class="container">'
-      print '<button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#reportverify_'+str(count)+''+str(reportcount)+'">VERIFY</button>'
-      print '<div id="reportverify_'+str(count)+''+str(reportcount)+'" class="collapse">'
-      print '<div class="table-responsive">'
-      print "<table class='table'>"
-      print "<tr><td>Date of run: "+rundate+"</td>"
-      print "<tr bgcolor=grey><th> control</th> <th> status </th> <th>command</th> <th>output</th></tr>"
+      htmlfile.write( '<div class="container">')
+      htmlfile.write( '<button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#reportverify_'+str(count)+''+str(reportcount)+'">VERIFY</button>')
+      htmlfile.write( '<div id="reportverify_'+str(count)+''+str(reportcount)+'" class="collapse">')
+      htmlfile.write( '<div class="table-responsive">')
+      htmlfile.write( "<table class='table'>")
+      htmlfile.write( "<tr><td>Date of run: "+rundate+"</td>")
+      htmlfile.write( "<tr bgcolor=grey><th> control</th> <th> status </th> <th>command</th> <th>output</th></tr>")
       try:
         with open(raw_log_path+'/'+rundate+'/'+hostname+'_'+rundate+'.json','r') as f:
           data = f.readlines()
@@ -147,21 +166,23 @@ for host in host_list:
               colour='lightgreen'
               if result['status'] == 'VERIFY' or result['status'] == 'UNKNOWN':
                 colour='orange'
-                print "<tr bgcolor="+colour+"><td>",control,"</td>", "<td>",result['status'],"</td>"
-                print "<td>",result['cmd'],"</td>"
-                print "<td>",result['output'],"</td></tr>"
+                htmlfile.write( "<tr bgcolor="+colour+"><td>"+control+"</td><td>"+result['status']+"</td>")
+                htmlfile.write( "<td>"+result['cmd']+"</td>")
+                htmlfile.write( "<td>"+result['output']+"</td></tr>")
       except IOError as err:
-              print "<tr><td>no run for this date</td> <td>",err,"</td> </tr>"
-      print "</table>"
-      print '</div>'
-      print '</div>'
+              htmlfile.write( "<tr><td>no run for this date</td> <td>"+err+"</td> </tr>")
+      htmlfile.write( "</table>")
+      htmlfile.write( '</div>')
+      htmlfile.write( '</div>')
 
-      print '</div>'
-      print '</div>'
-      print '</div>'
+      htmlfile.write( '</div>')
+      htmlfile.write( '</div>')
+      htmlfile.write( '</div>')
       reportcount =  reportcount + 1
-  print '</div>'
-  print '</div>'
+  htmlfile.write( '</div>')
+  htmlfile.write( '</div>')
   count =  count + 1
-print "</body>"
-print "</html>"
+htmlfile.write( "</body>")
+htmlfile.write( "</html>")
+
+print 'output generated in'+report_path
