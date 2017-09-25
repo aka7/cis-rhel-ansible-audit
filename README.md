@@ -18,7 +18,7 @@ this project is still in progress,  added following sections so far
 - section6
 
 ### setup
-add  hosts in your ansible file, i.e test-hosts
+add  hosts in your ansible inventory file, i.e test-hosts
 
 update vars/main.yml to suit your setup
 
@@ -31,12 +31,14 @@ some tasks may take a long time to run, check the scripts in files/bin
 
 # LOGS
 
-Custom logs, if custom_reporter plugin is enabled, you can find logs in log dir if log dir doesn't exists, create it first
+Custom logs, if custom_reporter plugin is enabled, you can find logs in reports/raw dir.  if dir doesn't exists, it will create it.
 
-log/${hostname}.txt
-log/summary_report.csv
+```
+reports/raw/${date}/${hostname}-${date}.json
+reports/raw/${date}/summary_report_${date}.csv
+```
 
-Logs will always be apended, so if you want clean logs, rm log/* then run playbook.
+Logs will always with date and time of run.
 
 example output, for summary_report.csv, will look like his
 
@@ -75,6 +77,34 @@ TASK: cis : 5.2.18 Make the Audit Configuration Immutable (Scored), alif.aka47.l
 
 ```
 
+# REPORTS
+
+To generate nice html report, there are two python scripts.  The scripts read the summary csv and the host.json files to generate html output.
+
+
+```
+python reportgen.py -i test-hosts 
+
+```
+reportgen.py will output file called  reports/html/cisreport.html
+
+
+
+To output html report per failed control, with collapse list of host listed, run reportgen_per_control.py
+
+```
+python reportgen_per_control.py -i test-hosts 
+
+```
+reportgen_control.py will output file called  reports/html/cis_report_per_control.html
+
+open file in browser, or place in www dir on a webserver to view. This is static file.
+
+Scripts are in progress and has been create for a quick html view of the reports generated.
+
+All the scripts needs to run from current dir of where playbook.yml.
+
+
 # NOTES On Custom_reporter plugin
 
   - Logs only if a task has a name
@@ -82,9 +112,9 @@ TASK: cis : 5.2.18 Make the Audit Configuration Immutable (Scored), alif.aka47.l
 
 
 TODO:
-  - add missing sections (6, 7 and 8)
-  - work on custom_loger to output in json
-  - create reports based on the output (html)
+  - add missing sections ( 7 and 8)
+  - work on custom_logger to output in json (DONE)
+  - create reports based on the output (html)  (IN PROGRESS)
   - show remedy options
 
 # Limitations

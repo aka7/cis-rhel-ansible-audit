@@ -73,7 +73,7 @@
     changed_when: false
     ignore_errors: true
     failed_when: >
-      '3: on' not in out522.stdout
+      '3:on' not in out522.stdout
     tags:
       - scored
       - section5.2
