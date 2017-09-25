@@ -19,9 +19,9 @@ def getRuns(reports_path):
 
 def getHosts (hostfile):
   with open(hostfile, 'r') as f:
-    your_list = f.readlines()
+    host_list = f.readlines()
   hosts=[]
-  for line in your_list:
+  for line in host_list:
      h = line[1]
      if not line.startswith ('#'):
        hosts.append(line.strip())
@@ -185,4 +185,4 @@ for host in host_list:
 htmlfile.write( "</body>")
 htmlfile.write( "</html>")
 
-print 'output generated in'+report_path
+print 'Output generated in '+report_path

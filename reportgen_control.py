@@ -1,6 +1,6 @@
 # reportgen.py
 # simple script to generate cis scan report based on the ouptut from custom plugins
-# output failed controls and hosts per control
+# output list of hosts per failed control
 
 import json
 import sys
@@ -19,9 +19,9 @@ def getRuns(reports_path):
 
 def getHosts (hostfile):
   with open(hostfile, 'r') as f:
-    your_list = f.readlines()
+    host_list = f.readlines()
   hosts=[]
-  for line in your_list:
+  for line in host_list:
      h = line[1]
      if not line.startswith ('#'):
        hosts.append(line.strip())
@@ -29,6 +29,7 @@ def getHosts (hostfile):
 
 
 # get overall status of a host
+# we can get this from summary csv file
 def getControls(datestamp):
   try:
     with open(raw_log_path+'/'+datestamp+'/summary_report_'+datestamp+'.csv', 'rb') as f:
@@ -64,6 +65,7 @@ def getHostControlDetails(hostname,control_id,datestamp):
    return control_id,{}
   return control_id,{}
 
+# get all failed hosts for a given control
 def getHostsPerControl(datestamp,control):
   try:
     with open(raw_log_path+'/'+datestamp+'/summary_report_'+datestamp+'.csv', 'rb') as f:
@@ -97,6 +99,7 @@ if not os.path.exists(report_path):
   os.mkdir(report_path)
 htmlfile = open(report_path+'/cis_report_per_control.html','w') 
 
+# using bootstrap html templates
 htmlfile.write( "<html>")
 htmlfile.write( "<head>")
 htmlfile.write( '  <meta name="viewport" content="width=device-width, initial-scale=1">')
@@ -108,7 +111,10 @@ htmlfile.write( '</head>')
 htmlfile.write( '<body>')
 htmlfile.write( '<center><h3> CIS scan report</h3></center>' )
 
+# get all scans that was run
 run_list=getRuns(raw_log_path)
+
+# get host list from inventory file
 host_list=getHosts(options.inventoryfile)
 
 # count needed for uniq html collapse tartgets
@@ -118,12 +124,18 @@ htmlfile.write( '<div class="container">')
 htmlfile.write( 'Run dates:')
 htmlfile.write( '</div>')
 for rundate in run_list:
+  # get all failed control
   failcontrols = getControls(rundate)
+
+  # count needed for uniq html collapse tartgets
   count=0
+
   reportcount= reportcount + 1
   htmlfile.write( '<div class="container">')
   htmlfile.write( '<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#report_'+str(count)+''+str(reportcount)+'">'+rundate+'</button>')
   htmlfile.write( '<div id="report_'+str(count)+''+str(reportcount)+'" class="collapse">')
+
+  #for each control, list failed hosts
   for control in failcontrols:
     hosts=getHostsPerControl(rundate,control)
     hostcount=len(hosts)
@@ -154,4 +166,4 @@ for rundate in run_list:
 htmlfile.write( "</body>")
 htmlfile.write( "</html>")
 
-print 'Html report generated in'+report_path
+print 'CIS Html report generated in '+report_path
