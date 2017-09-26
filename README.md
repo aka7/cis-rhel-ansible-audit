@@ -16,6 +16,7 @@ this project is still in progress,  added following sections so far
 - section4
 - section5
 - section6
+- section7
 
 ### setup
 add  hosts in your ansible inventory file, i.e test-hosts
@@ -112,7 +113,7 @@ All the scripts needs to run from current dir of where playbook.yml.
 
 
 TODO:
-  - add missing sections ( 7 and 8)
+  - add missing sections ( 8)
   - work on custom_logger to output in json (DONE)
   - create reports based on the output (html)  (IN PROGRESS)
   - show remedy options
