@@ -16,7 +16,7 @@ this project is still in progress,  added following sections so far
 - section4
 - section5
 - section6
-- section6
+- section7
 
 ### setup
 add  hosts in your ansible inventory file, i.e test-hosts
