@@ -146,7 +146,7 @@ class CallbackModule(CallbackBase):
               #perhost_file.write("\n{0}, {1}".format(self.taskid,status))
               #perhost_file.write("\ncmd: {0}".format(cmd))
               #perhost_file.write("\noutput: {0}".format(output))
-              self.summary.write("\n{0}, {1}, {2}'".format(self.taskid,host,status))
+              self.summary.write("\n{0}, {1}, {2}".format(self.taskid,host,status))
               self.perhost_file.write(json.dumps(outdata)+'\n')
 
     def _format_output(self, output, field):

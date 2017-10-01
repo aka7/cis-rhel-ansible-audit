@@ -29,23 +29,23 @@ def getHosts (hostfile):
 
 
 # get overall status of a host
-def getHostStatus(datestamp):
+def getHostStatus(datestamp,hostname):
   try:
     with open(raw_log_path+'/'+datestamp+'/summary_report_'+datestamp+'.csv', 'rb') as f:
       reader = csv.reader(f)
       thelist = list(reader)
   except:
     thelist={}
-  hosts={}
+  hoststatus=''
   for line in thelist:
    if line != []:
      status=line[2].strip()
      h = line[1].strip()
-     if status == 'FAIL':
-       hosts[h] = status
-       break 
-     hosts[h]=status
-  return hosts
+     if h.startswith(hostname) and status.startswith('FAIL'):
+       return 'FAIL'
+       break
+     hoststatus=status
+  return hoststatus
 
 
 parser = OptionParser()
@@ -84,14 +84,14 @@ for host in host_list:
   htmlfile.write( '<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#host'+str(count)+'">'+hostname+''+reportstatus+'</button>')
   htmlfile.write( '<div id="host'+str(count)+'" class="collapse">')
   for rundate in run_list:
-      runstatus = getHostStatus(rundate)
+      runstatus = getHostStatus(rundate,hostname)
       btn_class = 'btn-info'
       try:
-        if runstatus[hostname].startswith ('FAIL'):
+        if runstatus.startswith ('FAIL'):
           btn_class='btn-danger'
-        elif runstatus[hostname].startswith('VERIFY'):
+        elif runstatus.startswith('VERIFY'):
           btn_class='btn-warn'
-        elif runstatus[hostname].startswith('PASS'):
+        elif runstatus.startswith('PASS'):
           btn_class='btn-success'
       except KeyError as err:
           btn_class='btn-disabled'
