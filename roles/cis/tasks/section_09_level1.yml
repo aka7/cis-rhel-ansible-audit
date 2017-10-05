@@ -1,0 +1,477 @@
+---
+#
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#
+  - shell: ls -l /etc/passwd
+    register: passout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.2
+      - section9.1.6
+
+  - stat:
+      path: /etc/passwd
+    register: passwd
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.2
+      - section9.1.6
+
+  - name: 9.1.2 Verify Permissions on /etc/passwd (Scored)
+    debug:
+      msg: "{{ passout.stdout }}"
+    failed_when: >
+      passwd.stat.mode != '0644' or passwd.stat.pw_name != 'root' or passwd.stat.gid != 0
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.2
+
+  - shell: ls -l /etc/shadow
+    register: shadowout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.3
+      - section9.1.7
+
+  - stat:
+      path: /etc/shadow
+    register: shadow
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.3
+      - section9.1.7
+
+  - name: 9.1.3 Verify Permissions on /etc/shadow (Scored)
+    debug:
+      msg: "{{ shadowout.stdout }}"
+    failed_when: >
+      shadow.stat.mode != '0000'
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.3
+
+  - shell: ls -l /etc/gshadow
+    register: gshadowout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.4
+      - section9.1.8
+
+  - stat:
+      path: /etc/gshadow
+    register: gshadow
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.4
+      - section9.1.8
+
+  - name: 9.1.4 Verify Permissions on /etc/gshadow (Scored)
+    debug:
+      msg: "{{ gshadowout.stdout }}"
+    failed_when: >
+      gshadow.stat.mode != '0000'
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.4
+
+  - shell: ls -l /etc/group
+    register: groupout
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.5
+      - section9.1.9
+
+  - stat:
+      path: /etc/group
+    register: group
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.5
+      - section9.1.9
+
+  - name: 9.1.5 Verify Permissions on /etc/group (Scored)
+    debug:
+      msg: "{{ groupout.stdout }}"
+    failed_when: >
+      group.stat.mode != '0644'
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.5
+
+  - name: 9.1.6 Verify User/Group Ownership on /etc/passwd (Scored)
+    debug:
+      msg: "{{ passout.stdout }}"
+    failed_when: >
+       passwd.stat.pw_name != 'root' or passwd.stat.gid != 0
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.6
+
+  - name: 9.1.7 Verify User/Group Ownership on /etc/shadow (Scored)
+    debug:
+      msg: "{{ shadowout.stdout }}"
+    failed_when: >
+      shadow.stat.pw_name != 'root' or shadow.stat.gid != 0
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.7
+
+  - name: 9.1.8 Verify User/Group Ownership on /etc/gshadow (Scored)
+    debug:
+      msg: "{{ gshadowout.stdout }}"
+    failed_when: >
+      gshadow.stat.pw_name != 'root' or gshadow.stat.gid != 0
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.8
+
+  - name: 9.1.9 Verify User/Group Ownership on /etc/group (Scored)
+    debug:
+      msg: "{{ groupout.stdout }}"
+    failed_when: >
+      group.stat.pw_name != 'root' or group.stat.gid != 0
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.9
+
+  - name: 9.1.10 Find World Writable Files (Not Scored)
+    script: bin/verify_worldwritable_files.sh
+    register: out_9110
+    failed_when: out_9110.stdout != ''
+    when: verify_find
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - notscored
+      - section9.1
+      - section9.1.10
+
+  - name: 9.1.11 Find Un-owned Files and Directories (Scored)
+    shell: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser -ls"
+    register: out_9111
+    failed_when: out_9111.stdout != ''
+    when: verify_find
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.11
+
+  - name: 9.1.12 Find Un-grouped Files and Directories (Scored)
+    shell: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nogroup -ls"
+    register: out_9112
+    failed_when: out_9112.stdout != ''
+    when: verify_find
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.1
+      - section9.1.12
+
+  - name: 9.1.13 Find SUID System Executables (Not Scored)
+    script: bin/find_suid.sh
+    register: out_9113
+    failed_when: out_9113.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - notscored
+      - section9.1
+      - section9.1.13
+
+  - name: 9.1.14 Find SGID System Executables (Not Scored)
+    shell: find_sgid.sh
+    register: out_9114
+    failed_when: out_9114.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - notscored
+      - section9.1
+      - section9.1.14
+
+  - name: 9.2.1 Ensure Password Fields are Not Empty (Scored)
+    shell: /bin/cat /etc/shadow | /bin/awk -F':' '($2 == "" ) { print $1 " does not have a password "}'
+    register: out_921
+    failed_when: out_921.stdout != ''
+    when: verify_find
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.1
+
+  - name: '9.2.2 Verify No Legacy "+" Entries Exist in /etc/passwd File (Scored)'
+    shell: /bin/grep '^+:' /etc/passwd
+    register: out_922
+    failed_when: out_922.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.2
+
+  - name: '9.2.3 Verify No Legacy "+" Entries Exist in /etc/shadow File (Scored)'
+    shell: /bin/grep '^+:' /etc/shadow
+    register: out_923
+    failed_when: out_923.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.3
+
+  - name: '9.2.4 Verify No Legacy "+" Entries Exist in /etc/group File (Scored)'
+    shell: /bin/grep '^+:' /etc/group
+    register: out_924
+    failed_when: out_924.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.4
+
+  - name: 9.2.5 Verify No UID 0 Accounts Exist Other Than root (Scored)
+    shell: /bin/awk -F':' '($3 == 0) { print $1 }' /etc/passwd | grep -qx 'root'
+    register: out_925
+    failed_when: out_925.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.5
+
+  - name: 9.2.6 Ensure root PATH Integrity (Scored)
+    script: bin/path_integrity.sh
+    register: out_926
+    failed_when: out_926.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.6
+
+  - name: 9.2.7 Check Permissions on User Home Directories (Scored)
+    script: bin/check_perm_userdir.sh
+    register: out_927
+    failed_when: out_927.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.7
+
+  - name: 9.2.8 Check User Dot File Permissions (Scored)
+    script: bin/check_user_dot_files_perm.sh
+    register: out_928
+    failed_when: out_928.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.8
+
+  - name: 9.2.9 Check Permissions on User .netrc Files (Scored)
+    script: bin/check_user_dot_netrc_perm.sh
+    register: out_929
+    failed_when: out_929.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.9
+
+  - name: 9.2.10 Check for Presence of User .rhosts Files (Scored)
+    script: bin/dotrhosts_files_check.sh
+    register: out_9210
+    when: run_shell_scripts
+    failed_when: out_9210.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.10
+
+  - name: 9.2.11 Check Groups in /etc/passwd (Scored)
+    script: bin/check_groups.sh
+    register: out_9211
+    when: run_shell_scripts
+    failed_when: out_9211.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.11
+
+  - name: 9.2.12 Check That Users Are Assigned Valid Home Directories (Scored)
+    script: bin/user_home_defined.sh
+    register: out_9212
+    when: run_shell_scripts
+    failed_when: out_9212.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.12
+
+  - name: 9.2.13 Check User Home Directory Ownership (Scored)
+    script: bin/check_homedir_owner.sh
+    register: out_9213
+    when: run_shell_scripts
+    failed_when: out_9213.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.13
+
+  - name: 9.2.14 Check for Duplicate UIDs (Scored)
+    script: bin/unique_uid_check.sh
+    register: out_9214
+    failed_when: out_9214.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.14
+
+  - name: 9.2.15 Check for Duplicate GIDs (Scored)
+    script: bin/unique_gid_check.sh
+    register: out_9215
+    failed_when: out_9215.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.15
+
+  - name: 9.2.16 Check for Duplicate User Names (Scored)
+    shell: cut -f1 -d':' /etc/passwd | sort | uniq -c | sort -n | awk ' $1 > 1 {print $2}'
+    register: out_9216
+    failed_when: out_9216.stdout != ''
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.16
+
+  - name: 9.2.17 Check for Duplicate Group Names (Scored)
+    shell: cut -f1 -d':' /etc/group | sort | uniq -c | sort -n | awk ' $1 > 1 {print $2}'
+    register: out_9217
+    failed_when: out_9217.stdout != ''
+    changed_when: no
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.17
+
+  - name: 9.2.18 Check for Presence of User .netrc Files (Scored)
+    script: bin/dotnetrc_file_check.sh 
+    register: out_9218
+    failed_when: out_9218.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.18
+
+  - name: 9.2.19 Check for Presence of User .forward Files (Scored)
+    script: bin/dotforward_file_check.sh
+    register: out_9219
+    failed_when: out_9219.stdout != ''
+    when: run_shell_scripts
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section9.2
+      - section9.2.19

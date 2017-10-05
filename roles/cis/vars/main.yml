@@ -12,3 +12,7 @@ ntp_server: "{{ 'a-p-ntp-01' if ansible_domain == 'akait.local' else 'a-o-ntp-01
 sudoers_file: "{{ '/etc/sudoers.d/10_qualys' if ansible_domain == 'akaittd.local' else '/etc/opt/quest/qpm4u/policy/sudoers'}}"
 ftpd_package: 'vsftpd'
 httpd_package: 'httpd'
+# select yes to run the find commands in section9
+verify_find: no
+# set to yes if you want run the checks which uses scripts in files/bin
+run_shell_scripts: no

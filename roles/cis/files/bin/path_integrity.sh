@@ -1,4 +1,8 @@
 #!/bin/bash
+# Ensure root PATH Integrity
+# Including the current working directory (.) or other writable directory in root's 
+#executable path makes it likely that an attacker can gain superuser access by forcing an administrator operating as root to execute a Trojan horse program.
+
 if [ "`echo $PATH | grep :: `" != "" ]; then
   echo "Empty Directory in PATH (::)"
 fi

@@ -1,8 +1,9 @@
 #!/bin/bash
+# 9.2.12 Check That Users Are Assigned Valid Home Directories
 
 defUsers="root bin daemon adm lp sync shutdown halt mail news uucp operator games gopher ftp nobody nscd vcsa rpc mailnull smmsp pcap ntp dbus avahi sshd rpcuser nfsnobody haldaemon avahi-autoipd distcache apache oprofile webalizer dovecot squid named xfs gdm sabayon saslauth"
 
-# change to getent passwd to look at AD accounts
+# change to getent passwd to look at AD accounts/LDAP
 cat /etc/passwd |\
   /bin/awk -F: '{ print $1" "$6 }' |\
   while read user dir; do
