@@ -11,7 +11,7 @@ If you want to remedy the failed tasks, I recommend you use https://github.com/m
 ### setup
 provide your inventory file.  Example uses hosts set in test-hosts
 
-update vars/main.yml to suit your orgasation settings, such as ntp server, mailconfig, syslog_dest. Update if conditions where ansible_domain check is done for syslog_dest, puppet_server etc. 
+update vars/main.yml to suit your organisation settings, such as ntp server, mailconfig, syslog_dest. Update if conditions where ansible_domain check is used, i.e  syslog_dest, puppet_server replace the domain with your domain names per environment.
 
 
 The shells scripts in files/bin are taken from cis report.  These checks are disbaled by default, some find commands can take a while to run.  This is entirely upto you if like enable it.
