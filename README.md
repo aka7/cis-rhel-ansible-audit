@@ -18,10 +18,11 @@ The shells scripts in files/bin are taken from cis report.  These checks are dis
 To enable these checks, set vars `verify_find` and `run_shell_scripts` to  yes, in vars/mail.yml
 
 
-## WARN
+::: warning## 
 some tasks may take a long time to run, check the scripts in files/bin and enable scripts
 
 It is safe to run this checks on production servers, however some task could take a while to complete, depending on your systems.  I would recommand you run this on a test server first, review and then run against production server. No changes are made on the system.  
+:::
 
 ### Example:
 ```
