@@ -17,12 +17,10 @@ update vars/main.yml to suit your organisation settings, such as ntp server, mai
 The shells scripts in files/bin are taken from cis report.  These checks are disbaled by default, some find commands can take a while to run.  This is entirely upto you if like enable it.
 To enable these checks, set vars `verify_find` and `run_shell_scripts` to  yes, in vars/mail.yml
 
-
-::: warning
+### WARN
 some tasks may take a long time to run, check the scripts in files/bin and enable scripts
 
 It is safe to run this checks on production servers, however some task could take a while to complete, depending on your systems.  I would recommand you run this on a test server first, review and then run against production server. No changes are made on the system.  
-:::
 
 ### Example:
 ```
