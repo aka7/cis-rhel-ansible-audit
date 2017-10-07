@@ -6,33 +6,32 @@ This is an ansible playbook for auditing a system running Red Hat Enterprise Lin
 
 Insipired by https://github.com/major/cis-rhel-ansible but instead of applying the changes, this will just report if a system passes or fails for each task.
 
-If you want to remedy the failed tasks, see https://github.com/major/cis-rhel-ansible
-
-# NOTE
-this project is still in progress,  added following sections so far
-- section1
-- section2
-- section3
-- section4
-- section5
-- section6
-- section7
+If you want to remedy the failed tasks, I recommend you use https://github.com/major/cis-rhel-ansible
 
 ### setup
-add  hosts in your ansible inventory file, i.e test-hosts
+provide your invenroty file.  Example uses hosts set in test-hosts
 
-update vars/main.yml to suit your setup
+update vars/main.yml to suit your orgasation settings, such as ntp server, mailconfig, syslog_dest. Update if conditions where ansible_domain check is done for syslog_dest, puppet_server etc. 
+
+
+The shells scripts in files/bin are taken from cis report.  These checks are disbaled by default, some find commands can take a while to run.  This is entirely upto you if like enable it.
+To enable these checks, set vars `verify_find` and `run_shell_scripts` to  yes, in vars/mail.yml
+
+
+## WARN
+some tasks may take a long time to run, check the scripts in files/bin and enable scripts
+
+It is safe to run this checks on production servers, however some task could take a while to complete, depending on your systems.  I would recommand you run this on a test server first, review and then run against production server. No changes are made on the system.  
 
 ### Example:
 ```
-ansible-playbook -i test-hosts playbook.yml --extra-vars="nodes=all" --tags=level2 -K -k
+ansible-playbook -i test-hosts playbook.yml --extra-vars="nodes=all" --tags=section1 -K -k
+
 ```
-## WARN
-some tasks may take a long time to run, check the scripts in files/bin
 
-# LOGS
+# LOGS and REPORTS
 
-Custom logs, if custom_reporter plugin is enabled, you can find logs in reports/raw dir.  if dir doesn't exists, it will create it.
+Custom logs, if custom_reporter plugin is enabled, you can find logs in reports/raw dir.  if dir doesn't exists, it will create it. These logs are generated so we can then run scripts to generate fancy report. CSV fail can be opened in excel to view at a glace on which controls failed.
 
 ```
 reports/raw/${date}/${hostname}-${date}.json
