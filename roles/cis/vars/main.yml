@@ -17,3 +17,11 @@ verify_find: no
 # set to yes if you want run the checks which uses scripts in files/bin
 run_shell_scripts: no
 banner_search_text: "Authorised users only"
+log_files:
+  - /var/log/messages
+  - /var/log/secure
+  - /var/log/maillog
+  - /var/log/syslog
+  - /var/log/kern.log
+  - /var/log/cron
+  - /var/log/spooler

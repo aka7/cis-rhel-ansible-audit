@@ -116,7 +116,7 @@ for host in host_list:
                 colour='red'
                 htmlfile.write( '<tr bgcolor="+colour+"><td>'+control+'</td> <td>'+result["status"]+'</td>')
                 htmlfile.write( "<td>"+result['cmd']+"</td>")
-                htmlfile.write( "<td>"+result['output']+"</td></tr>")
+                htmlfile.write( "<td>"+str(result['output'])+"</td></tr>")
       except IOError as err:
               htmlfile.write( "<tr><td>no run for this date</td> <td>"+err+"</td> </tr>")
       htmlfile.write( "</table>")

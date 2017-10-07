@@ -42,13 +42,7 @@
     changed_when: false
     ignore_errors: True
     with_items:
-      - /var/log/messages
-      - /var/log/secure
-      - /var/log/maillog
-      - /var/log/syslog
-      - /var/log/kern.log
-      - /var/log/cron
-      - /var/log/spooler
+      "{{ log_files }}"
     tags:
       - notscored
       - section5.1
@@ -61,13 +55,7 @@
     failed_when: >
       command.stat.mode != '0600' or command.stat.pw_name != 'root' or command.stat.gid != 0
     with_items:
-      - /var/log/messages
-      - /var/log/secure
-      - /var/log/maillog
-      - /var/log/syslog
-      - /var/log/kern.log
-      - /var/log/cron
-      - /var/log/spooler
+      "{{ log_files }}"
     changed_when: false
     ignore_errors: True
     tags:
@@ -129,12 +117,7 @@
   - shell: "grep '{' /etc/logrotate.d/syslog | grep {{ item }}"
     register: logrotate
     with_items:
-      - /var/log/messages
-      - /var/log/secure
-      - /var/log/maillog
-      - /var/log/cron
-      - /var/log/spooler
-      - /var/log/boot.log
+      "{{ log_files }}"
     changed_when: false
     ignore_errors: true
     tags:
