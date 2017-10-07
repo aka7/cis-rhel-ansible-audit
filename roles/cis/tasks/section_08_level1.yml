@@ -14,8 +14,7 @@
 #   limitations under the License.
 #
 
-  - name: 8.1 Set Warning Banner for Standard Login Services (Scored)
-    command: 'grep "{{ banner_search_text }}" /etc/{{ item }}'
+  - command: "grep '{{ banner_search_text }}' /etc/{{ item }}"
     register: out81
     changed_when: false
     ignore_errors: true
@@ -27,14 +26,29 @@
       - scored
       - section8.1
 
-  - name: 8.2 Remove OS Information from Login Warning Banners (Scored)
-    command: "egrep '(\\v|\\r|\\m|\\s)' /etc/{{ item }}"
+  - name: 8.1 Set Warning Banner for Standard Login Services (Scored)
+    debug: msg={{ out81.results }}
+    changed_when: false
+    ignore_errors: true
+    tags:
+      - scored
+      - section8.1
+
+  - command: "egrep '(\\v|\\r|\\m|\\s)' /etc/{{ item }}"
+    register: out82
     changed_when: false
     ignore_errors: true
     with_items:
       - issue
       - issue.net 
       - banner
+    tags:
+      - scored
+      - section8.2
+  - name: 8.2 Remove OS Information from Login Warning Banners (Scored)
+    debug: msg={{ out82.results }}
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section8.2
