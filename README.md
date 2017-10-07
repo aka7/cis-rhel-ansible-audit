@@ -9,7 +9,7 @@ Insipired by https://github.com/major/cis-rhel-ansible but instead of applying t
 If you want to remedy the failed tasks, I recommend you use https://github.com/major/cis-rhel-ansible
 
 ### setup
-provide your invenroty file.  Example uses hosts set in test-hosts
+provide your inventory file.  Example uses hosts set in test-hosts
 
 update vars/main.yml to suit your orgasation settings, such as ntp server, mailconfig, syslog_dest. Update if conditions where ansible_domain check is done for syslog_dest, puppet_server etc. 
 
