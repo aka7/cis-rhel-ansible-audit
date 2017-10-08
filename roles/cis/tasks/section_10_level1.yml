@@ -14,32 +14,14 @@
 #   limitations under the License.
 #
 
-  - include: section_01.yml
-    tags: section1
+# any additional company specific checks, controls here are not part of CIS
+#
 
-  - include: section_02.yml
-    tags: section2
-
-  - include: section_03.yml
-    tags: section3
-
-  - include: section_04.yml
-    tags: section4
-
-  - include: section_05.yml
-    tags: section5
-
-  - include: section_06.yml
-    tags: section6
-
-  - include: section_07.yml
-    tags: section7
-
-  - include: section_08.yml
-    tags: section8
-
-  - include: section_09.yml
-    tags: section9
-
-  - include: section_10.yml
-    tags: section10
+  - name: 10.1 Set puppetserver (Not Scored)
+    command: grep {{ puppet_server }} {{ puppet_conf }}
+    changed_when: false
+    when: puppet_check
+    ignore_errors: true
+    tags:
+      - notscored
+      - section10.1

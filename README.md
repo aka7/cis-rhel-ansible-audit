@@ -13,14 +13,16 @@ provide your inventory file.  Example uses hosts set in test-hosts
 
 update vars/main.yml to suit your organisation settings, such as ntp server, mailconfig, syslog_dest. Update if conditions where ansible_domain check is used, i.e  syslog_dest, puppet_server replace the domain with your domain names per environment.
 
-
 The shells scripts in files/bin are taken from cis report.  These checks are disbaled by default, some find commands can take a while to run.  This is entirely upto you if like to to enable it.
+
 To enable these checks, set vars `verify_find` and `run_shell_scripts` to  yes, in vars/mail.yml
 
 ```
 verify_find: no
 run_shell_scripts: no
 ```
+
+section10 is added to allow any company specific controls, which are not requirement of CIS, such as checking for puppet.
 
 ### WARN
 Check the scripts in files/bin and enable scripts, these checks are disabled by default, just so you can review them before running.
@@ -42,7 +44,7 @@ reports/raw/${date}/${hostname}-${date}.json
 reports/raw/${date}/summary_report_${date}.csv
 ```
 
-Logs will always with date and time of run.
+Logs will always have date and time of run.
 
 example output, for summary_report.csv, will look like his
 

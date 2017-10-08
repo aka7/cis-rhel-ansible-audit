@@ -6,8 +6,10 @@ auditdconf: /etc/audit/auditd.conf
 auditd_rules: /etc/audit/audit.rules
 sshd_config: /etc/ssh/sshd_config
 
+# set this to suit your domain and syslog server.
 syslog_dest: "{{ '10.183.195.60' if ansible_domain == 'akait.local' else '10.167.195.60' }}"
-puppet_server: "{{ 'puppet.akait.local' if ansible_domain == 'akait.local' else 'puppetpp.akaitpp.local' if ansible_domain == 'akaitpp.local' else 'akaittd.local'}}"
+
+
 ntp_server: "{{ 'a-p-ntp-01' if ansible_domain == 'akait.local' else 'a-o-ntp-01' if ansible_domain == 'akaitpp.local' else 'a-t-ntp-01'}}"
 sudoers_file: "{{ '/etc/sudoers.d/10_qualys' if ansible_domain == 'akaittd.local' else '/etc/opt/quest/qpm4u/policy/sudoers'}}"
 ftpd_package: 'vsftpd'
@@ -25,3 +27,10 @@ log_files:
   - /var/log/kern.log
   - /var/log/cron
   - /var/log/spooler
+
+# below settings are custom checks outside cis. this task is not enabled by default
+# set this to suit your domain and puppet server, if you use puppet, if not, set puppet_check to no
+puppet_server: "{{ 'puppet.akait.local' if ansible_domain == 'akait.local' else 'puppetpp.akaitpp.local' if ansible_domain == 'akaitpp.local' else 'akaittd.local'}}"
+puppet_check: no
+puppet_conf: /etc/puppetlabs/puppet/puppet.conf
+# 
