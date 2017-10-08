@@ -14,8 +14,13 @@ provide your inventory file.  Example uses hosts set in test-hosts
 update vars/main.yml to suit your organisation settings, such as ntp server, mailconfig, syslog_dest. Update if conditions where ansible_domain check is used, i.e  syslog_dest, puppet_server replace the domain with your domain names per environment.
 
 
-The shells scripts in files/bin are taken from cis report.  These checks are disbaled by default, some find commands can take a while to run.  This is entirely upto you if like enable it.
+The shells scripts in files/bin are taken from cis report.  These checks are disbaled by default, some find commands can take a while to run.  This is entirely upto you if like to to enable it.
 To enable these checks, set vars `verify_find` and `run_shell_scripts` to  yes, in vars/mail.yml
+
+```
+verify_find: no
+run_shell_scripts: no
+```
 
 ### WARN
 Check the scripts in files/bin and enable scripts, these checks are disabled by default, just so you can review them before running.
@@ -30,7 +35,7 @@ ansible-playbook -i test-hosts playbook.yml --extra-vars="nodes=all" --tags=sect
 
 # LOGS and REPORTS
 
-Custom logs, if custom_reporter plugin is enabled, you can find logs in reports/raw dir.  if dir doesn't exists, it will create it. These logs are generated so we can then run scripts to generate fancy report. CSV fail can be opened in excel to view at a glace on which controls failed.
+Custom logs, if custom_reporter plugin is enabled, you can find logs in reports/raw dir.  if dir doesn't exists, it will create it. These logs are generated so we can then run scripts to generate fancy report. .csv can be opened in excel to view at a glance on which controls failed.
 
 ```
 reports/raw/${date}/${hostname}-${date}.json
@@ -87,6 +92,7 @@ python reportgen.py -i test-hosts
 ```
 reportgen.py will output file called  reports/html/cisreport.html
 
+This will generate report of all the runs found in reports/raw dir, for all hosts given in test-hosts inventory file.
 
 
 To output html report per failed control, with collapse list of host listed, run reportgen_per_control.py
@@ -97,24 +103,25 @@ python reportgen_per_control.py -i test-hosts
 ```
 reportgen_control.py will output file called  reports/html/cis_report_per_control.html
 
-open file in browser, or place in www dir on a webserver to view. This is static file.
+This will generate report of all the runs found in reports/raw dir, list only the failed controls and which hosts failed. For all hosts given in test-hosts inventory file.
 
-Scripts are in progress and has been create for a quick html view of the reports generated.
+open file in browser, or place in www dir on a webserver to view. This is a static file.
 
-All the scripts needs to run from current dir of where playbook.yml.
+
+These reports scripts are in progress  and has been created for a quick html view of the reports generated.
+
+All the scripts needs to run from current dir of where playbook.yml is located.
 
 
 # NOTES On Custom_reporter plugin
 
-  - Logs only if a task has a name
+  - Logs only if a task has a name, this so we can managed logging and only log the tasks we like to report on by giving a name.
   - Do not add any comma(,) in name. This is because of summary_report.csv , otherwise you will have more fields when you open the file in excel.
 
 
 TODO:
-  - add missing sections ( 8)
-  - work on custom_logger to output in json (DONE)
   - create reports based on the output (html)  (IN PROGRESS)
-  - show remedy options
+  - show remedy options for each failed control
 
 # Limitations
 requires ansible > 2.1
