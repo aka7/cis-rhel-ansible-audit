@@ -57,7 +57,7 @@ open file cis_report_per_control.html in browser to see result per control.
 
 you can also view the .csv file 
 
-open reports/raw/$date_$time/summary_$date_time.csv
+reports/raw/${date}/summary_report_${date}.csv
 
 
 # LOGS and REPORTS
