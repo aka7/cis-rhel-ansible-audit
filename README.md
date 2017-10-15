@@ -24,16 +24,41 @@ run_shell_scripts: no
 
 section10 is added to allow any company specific controls, which are not requirement of CIS, such as checking for puppet.
 
-### WARN
-Check the scripts in files/bin and enable scripts, these checks are disabled by default, just so you can review them before running.
+enable plugins/custom_reporter.py in ansible.cfg (set by default)
 
-It is safe to run all the checks on this playbook on production servers, however some tasks may could take a while to complete depending on your infrastructure.  I would recommand you run this on a test server first, review and then run against production server. No changes are made on the system.
+```
+callback_plugins = plugins
+```
+This is enabled by the default in ansible.cfg file provided.
+
+Make sure this is in the current directory.
+
+### Warn 
+Check the scripts in files/bin and enable them as mentioned.  These checks are disabled by default, just so you can review them before running.
+
+It is safe to run all the checks on this playbook. Some tasks could take a while to run depending on your infrastructure.  I would recommand you run this on a test server first before running against multiple servers. No changes are made on the system.
 
 ### Example:
 ```
 ansible-playbook -i test-hosts playbook.yml --extra-vars="nodes=all" --tags=section1 -K -k
 
 ```
+
+Generate reports.
+
+```
+python reportgen.py -i test-hosts 
+python reportgen_control.py -i test-hosts
+
+```
+open file cis_report.html in browser to see the result.
+
+open file cis_report_per_control.html in browser to see result per control.
+
+you can also view the .csv file 
+
+open reports/raw/$date_$time/summary_$date_time.csv
+
 
 # LOGS and REPORTS
 
