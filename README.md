@@ -122,10 +122,12 @@ All the scripts needs to run from current dir of where playbook.yml is located.
 
 
 TODO:
-  - create reports based on the output (html)  (IN PROGRESS)
+  - improve reporting, html out, csv output
   - show remedy options for each failed control
+  - rhel7/centos7 support
 
 # Limitations
 requires ansible > 2.1
+tested only againnst ansible 2.1
 
 Tested on ansible 2.1 only.
