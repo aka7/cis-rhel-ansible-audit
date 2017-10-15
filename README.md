@@ -44,7 +44,7 @@ ansible-playbook -i test-hosts playbook.yml --extra-vars="nodes=all" --tags=sect
 
 ```
 
-Generate reports.
+Generate reports (if customer_reporter.py plugin is enabled)
 
 ```
 python reportgen.py -i test-hosts 
