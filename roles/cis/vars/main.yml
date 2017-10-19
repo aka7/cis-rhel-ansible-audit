@@ -7,7 +7,7 @@ auditd_rules: /etc/audit/audit.rules
 sshd_config: /etc/ssh/sshd_config
 
 # set this to suit your domain and syslog server.
-syslog_dest: "{{ '10.183.195.60' if ansible_domain == 'akait.local' else '10.167.195.60' }}"
+syslog_dest: "{{ '192.168.1.60' if ansible_domain == 'akait.local' else '192.168.2.60' }}"
 
 
 ntp_server: "{{ 'a-p-ntp-01' if ansible_domain == 'akait.local' else 'a-o-ntp-01' if ansible_domain == 'akaitpp.local' else 'a-t-ntp-01'}}"
