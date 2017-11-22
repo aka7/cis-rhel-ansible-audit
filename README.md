@@ -142,7 +142,7 @@ All the scripts needs to run from current dir of where playbook.yml is located.
 
 # NOTES On Custom_reporter plugin
 
-  - Logs only if a task has a name, this so we can managed logging and only log the tasks we like to report on by giving a name.
+  - Logs only if a task has a name, this is so we can managed logging and only log the tasks we like to report on by giving a name.
   - Do not add any comma(,) in name. This is because of summary_report.csv , otherwise you will have more fields when you open the file in excel.
 
 
