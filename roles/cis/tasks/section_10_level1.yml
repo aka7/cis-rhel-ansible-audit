@@ -19,8 +19,8 @@
 
   - name: 10.1 Set puppetserver (Not Scored)
     command: grep {{ puppet_server }} {{ puppet_conf }}
-    changed_when: false
     when: puppet_check
+    changed_when: false
     ignore_errors: true
     tags:
       - notscored

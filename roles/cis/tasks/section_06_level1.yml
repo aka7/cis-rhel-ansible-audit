@@ -128,6 +128,8 @@
       - section6.1.10
   - name: 6.1.10 Restrict at Daemon (Scored)
     shell: stat -L -c "%a %u %g" /etc/at.allow | egrep ".00 0 0"
+    changed_when: false
+    ignore_errors: true
     tags:
       - scored
       - section6.1

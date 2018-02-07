@@ -295,6 +295,7 @@
     shell: chkconfig --list iptables
     register: out47
     changed_when: false
+    ignore_errors: true
     failed_when: >
       out47.rc != 0 or '3:on' not in out47.stdout 
     tags:

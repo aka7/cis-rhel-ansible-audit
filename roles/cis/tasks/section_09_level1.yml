@@ -445,7 +445,7 @@
     shell: cut -f1 -d':' /etc/group | sort | uniq -c | sort -n | awk ' $1 > 1 {print $2}'
     register: out_9217
     failed_when: out_9217.stdout != ''
-    changed_when: no
+    changed_when: false
     ignore_errors: true
     tags:
       - scored
