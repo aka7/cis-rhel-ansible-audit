@@ -22,6 +22,7 @@
       umask_out.rc != 0 and ('027' not in umask_out.stdout )
     changed_when: false
     ignore_errors: true
+    when: section_3_1 | bool
     tags:
       - scored
       - section3.1
@@ -33,6 +34,7 @@
     ignore_errors: true
     failed_when: >
       'id:3:initdefault' not in xwin.stdout 
+    when: section_3_2 | bool
     tags:
       - scored
       - section3.2
@@ -44,6 +46,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out32.stdout 
+    when: section_3_2 | bool
     tags:
       - scored
       - section3.2
@@ -55,6 +58,7 @@
     ignore_errors: true
     failed_when: >
       out33.rc == 0 and ':on' in out33.stdout 
+    when: section_3_3 | bool
     tags:
       - scored
       - section3.3
@@ -66,6 +70,7 @@
     ignore_errors: true
     failed_when: >
       out34.rc == 0 and ':on' in out34.stdout 
+    when: section_3_4 | bool
     tags:
       - notscored
       - section3.4
@@ -77,6 +82,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out35.stdout 
+    when: section_3_5 | bool
     tags:
       - scored
       - section3.5
@@ -88,6 +94,7 @@
     ignore_errors: true
     failed_when: >
       'restrict default kod nomodify notrap nopeer noquery' not in out36.stdout 
+    when: section_3_6 | bool
     tags:
       - scored
       - section3.6
@@ -97,6 +104,7 @@
     register: ntp
     changed_when: false
     ignore_errors: true
+    when: section_3_6 | bool
     tags:
       - scored
       - section3.6
@@ -108,6 +116,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out37.stdout 
+    when: section_3_7 | bool
     tags:
       - notscored
       - section3.7
@@ -119,6 +128,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out37_client.stdout 
+    when: section_3_7 | bool
     tags:
       - notscored
       - section3.7
@@ -135,6 +145,7 @@
     ignore_errors: true
     failed_when: >
       ':on' in nfscheck.stdout  
+    when: section_3_8 | bool
     tags:
       - notscored
       - section3.8
@@ -142,6 +153,7 @@
   - name: 3.8 Disable NFS and RPC (check for nfs-utils) (Not Scored)
     debug:
       msg: "{{ nfscheck.results }}"
+    when: section_3_8 | bool
     tags:
       - notscored
       - section3.8
@@ -153,6 +165,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out39.stdout 
+    when: section_3_9 | bool
     tags:
       - notscored
       - section3.9
@@ -164,6 +177,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out310.stdout 
+    when: section_3_10 | bool
     tags:
       - notscored
       - section3.10
@@ -175,6 +189,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out311.stdout 
+    when: section_3_11 | bool
     tags:
       - notscored
       - section3.11
@@ -186,6 +201,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out312.stdout 
+    when: section_3_12 | bool
     tags:
       - notscored
       - section3.12
@@ -197,6 +213,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out313.stdout 
+    when: section_3_13 | bool
     tags:
       - notscored
       - section3.13
@@ -208,6 +225,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out314.stdout 
+    when: section_3_14 | bool
     tags:
       - notscored
       - section3.14
@@ -219,6 +237,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out315.stdout 
+    when: section_3_15 | bool
     tags:
       - notscored
       - section3.15
@@ -230,6 +249,7 @@
     ignore_errors: true
     failed_when: >
       '127.0.0.1:25' not in out316.stdout 
+    when: section_3_16 | bool
     tags:
       - scored
       - section3.16

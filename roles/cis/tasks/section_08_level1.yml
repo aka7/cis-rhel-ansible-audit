@@ -18,6 +18,7 @@
     register: out81
     changed_when: false
     ignore_errors: true
+    when: section_8_1 | bool
     with_items:
       - issue
       - issue.net
@@ -30,6 +31,7 @@
     debug: msg={{ out81.results }}
     changed_when: false
     ignore_errors: true
+    when: section_8_1 | bool
     tags:
       - scored
       - section8.1
@@ -38,6 +40,7 @@
     register: out82
     changed_when: false
     ignore_errors: true
+    when: section_8_2 | bool
     with_items:
       - issue
       - issue.net 
@@ -49,12 +52,14 @@
     debug: msg={{ out82.results }}
     changed_when: false
     ignore_errors: true
+    when: section_8_2 | bool
     tags:
       - scored
       - section8.2
 
   - name: 8.3 Set GNOME Warning Banner (Not Scored)
     debug: msg="*** N/A on servers, add if you run gnome on servers"
+    when: section_8_3 | bool
     tags:
       - scored
       - section8.3

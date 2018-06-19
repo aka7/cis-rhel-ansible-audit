@@ -18,6 +18,7 @@
     shell: rpm -q cronie-anacron
     changed_when: false
     ignore_errors: true
+    when: section_6_1_1 | bool
     tags:
       - scored
       - section6.1
@@ -30,6 +31,7 @@
       '3:on' not in cron.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_1_2 | bool
     tags:
       - scored
       - section6.1
@@ -39,6 +41,7 @@
     shell: stat -L -c "%a %u %g" /etc/anacrontab | egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_3 | bool
     tags:
       - scored
       - section6.1
@@ -48,6 +51,7 @@
     shell: stat -L -c "%a %u %g" /etc/crontab | egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_4 | bool
     tags:
       - scored
       - section6.1
@@ -57,6 +61,7 @@
     shell: stat -L -c "%a %u %g" /etc/cron.hourly | egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_5 | bool
     tags:
       - scored
       - section6.1
@@ -66,6 +71,7 @@
     shell: stat -L -c "%a %u %g" /etc/cron.daily | egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_6 | bool
     tags:
       - scored
       - section6.1
@@ -75,6 +81,7 @@
     shell: stat -L -c "%a %u %g" /etc/cron.weekly | egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_7 | bool
     tags:
       - scored
       - section6.1
@@ -84,6 +91,7 @@
     shell: stat -L -c "%a %u %g" /etc/cron.monthly | egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_8 | bool
     tags:
       - scored
       - section6.1
@@ -93,6 +101,7 @@
     shell: stat -L -c "%a %u %g" /etc/cron.d | egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_9 | bool
     tags:
       - scored
       - section6.1
@@ -103,6 +112,7 @@
     register: atdeny
     changed_when: false
     ignore_errors: true
+    when: section_6_1_10 | bool
     tags:
       - scored
       - section6.1
@@ -112,6 +122,7 @@
     changed_when: false
     ignore_errors: true
     register: atallow
+    when: section_6_1_10 | bool
     tags:
       - scored
       - section6.1
@@ -122,6 +133,7 @@
       atdeny.stat.exists == True 
     changed_when: false
     ignore_errors: true
+    when: section_6_1_10 | bool
     tags:
       - scored
       - section6.1
@@ -130,6 +142,7 @@
     shell: stat -L -c "%a %u %g" /etc/at.allow | egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_10 | bool
     tags:
       - scored
       - section6.1
@@ -140,6 +153,7 @@
     register: crondeny
     changed_when: false
     ignore_errors: true
+    when: section_6_1_11 | bool
     tags:
       - scored
       - section6.1
@@ -149,6 +163,7 @@
     changed_when: false
     ignore_errors: true
     register: cronallow
+    when: section_6_1_11 | bool
     tags:
       - scored
       - section6.1
@@ -159,6 +174,7 @@
     failed_when: crondeny.stat.exists == True
     changed_when: false
     ignore_errors: true
+    when: section_6_1_11 | bool
     tags:
       - scored
       - section6.1
@@ -168,6 +184,7 @@
     shell: echo '/etc/cron.allow' && stat -L -c "%a %u %g" /etc/cron.allow | egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_11 | bool
     tags:
       - scored
       - section6.1
@@ -177,6 +194,7 @@
     shell: stat -L -c "%a %u %g" /etc/at.allow| egrep ".00 0 0"
     changed_when: false
     ignore_errors: true
+    when: section_6_1_11 | bool
     tags:
       - scored
       - section6.1
@@ -189,6 +207,7 @@
       'Protocol 2' not in out_6_2_1.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_2_1 | bool
     tags:
       - scored
       - section6.2
@@ -201,6 +220,7 @@
       'LogLevel INFO' not in out_6_2_2.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_2_2 | bool
     tags:
       - scored
       - section6.2
@@ -211,6 +231,7 @@
     register: sshdconfig
     changed_when: false
     ignore_errors: true
+    when: section_6_2_3 | bool
     tags:
       - scored
       - section6.2
@@ -222,6 +243,7 @@
       sshdconfig.stat.uid != 0 and sshdconfig.stat.gid != 0 and sshdconfig.stat.mode != 0600
     changed_when: false
     ignore_errors: true
+    when: section_6_2_3 | bool
     tags:
       - scored
       - section6.2
@@ -232,6 +254,7 @@
     register: out_6_2_4
     changed_when: false
     ignore_errors: true
+    when: section_6_2_4 | bool
     failed_when: >
       'X11Forwarding no' not in out_6_2_4.stdout
     tags:
@@ -244,6 +267,7 @@
     register: out_6_2_5
     changed_when: false
     ignore_errors: true
+    when: section_6_2_5 | bool
     failed_when: >
       "MaxAuthTries 4" not in out_6_2_5.stdout
     tags:
@@ -256,6 +280,7 @@
     register: out_6_2_6
     changed_when: false
     ignore_errors: true
+    when: section_6_2_6 | bool
     failed_when: >
       "IgnoreRhosts yes" not in out_6_2_6.stdout
     tags:
@@ -268,6 +293,7 @@
     register: out_6_2_7
     changed_when: false
     ignore_errors: true
+    when: section_6_2_7 | bool
     failed_when: >
       "HostbasedAuthentication no" not in out_6_2_7.stdout
     tags:
@@ -282,6 +308,7 @@
       "PermitRootLogin no" not in out_6_2_8.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_2_8 | bool
     tags:
       - scored
       - section6.2
@@ -294,6 +321,7 @@
       "PermitEmptyPasswords no" not in out_6_2_9.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_2_9 | bool
     tags:
       - scored
       - section6.2
@@ -306,6 +334,7 @@
       "PermitUserEnvironment no" not in out_6_2_10.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_2_10 | bool
     tags:
       - scored
       - section6.2
@@ -318,6 +347,7 @@
       "Ciphers aes128-ctr,aes192-ctr,aes256-ctr" not in out_6_2_11.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_2_11 | bool
     tags:
       - scored
       - section6.2
@@ -330,6 +360,7 @@
       "ClientAliveInterval 300" not in out_6_2_12.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_2_12 | bool
     tags:
       - scored
       - section6.2
@@ -342,6 +373,7 @@
       "ClientAliveCountMax 0" not in out_6_2_12_2.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_2_12 | bool
     tags:
       - scored
       - section6.2
@@ -351,6 +383,7 @@
     shell: 'grep "^AllowUsers" {{ sshd_config }}'
     changed_when: false
     ignore_errors: true
+    when: section_6_2_13 | bool
     tags:
       - scored
       - section6.2
@@ -360,6 +393,7 @@
     shell: 'grep "^AllowGroups" {{ sshd_config }}'
     changed_when: false
     ignore_errors: true
+    when: section_6_2_13 | bool
     tags:
       - scored
       - section6.2
@@ -369,6 +403,7 @@
     shell: 'grep "^DenyUsers" {{ sshd_config }}'
     changed_when: false
     ignore_errors: true
+    when: section_6_2_13 | bool
     tags:
       - scored
       - section6.2
@@ -378,6 +413,7 @@
     shell: 'grep "^DenyGroups" {{ sshd_config }}'
     changed_when: false
     ignore_errors: true
+    when: section_6_2_13 | bool
     tags:
       - scored
       - section6.2
@@ -390,6 +426,7 @@
       "Banner /etc/banner" not in out_6_2_14.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_2_14 | bool
     tags:
       - scored
       - section6.2
@@ -399,6 +436,7 @@
     shell: authconfig --test | grep hashing | grep sha512
     changed_when: false
     ignore_errors: true
+    when: section_6_3_1 | bool
     tags:
       - scored
       - section6.3
@@ -411,6 +449,7 @@
       "password required pam_cracklib.so try_first_pass retry=3 minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" not in out_6_3_2.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_3_2 | bool
     tags:
       - scored
       - section6.3
@@ -418,6 +457,7 @@
 
   - name: 6.3.3 Set Lockout for Failed Password Attempts (Not Scored)
     debug: msg="TODO"
+    when: section_6_3_3 | bool
     tags:
       - scored
       - section6.3
@@ -430,6 +470,7 @@
       "password sufficient pam_unix.so remember=5" not in out_6_3_4.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_3_4 | bool
     tags:
       - scored
       - section6.3
@@ -439,6 +480,7 @@
     shell:  cat /etc/securetty
     changed_when: false
     ignore_errors: true
+    when: section_6_4 | bool
     tags:
       - notscored
       - section6.4
@@ -450,6 +492,7 @@
       '^auth required pam_wheel.so use_uid' not in out_6_5.stdout
     changed_when: false
     ignore_errors: true
+    when: section_6_5 | bool
     tags:
       - scored
       - section6.5
