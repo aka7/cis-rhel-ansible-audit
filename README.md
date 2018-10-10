@@ -35,7 +35,7 @@ This is enabled by the default in ansible.cfg file provided.
 Make sure this is in the current directory.
 
 ### Control exceptions
-if you have exceptions on any control and do not want to run the control in full run. set the control to No in file =roles/cis/defaults/main.yml=
+if you have exceptions on any control and do not want to run the control in full run. set the control to No in file roles/cis/defaults/main.yml
 For exmaple, to not run section 1.1.1, set value to no
 ```
 grep section_1_1_1: roles/cis/defaults/main.yml
