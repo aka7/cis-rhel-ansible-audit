@@ -21,6 +21,7 @@
     changed_when: false
     failed_when: >
       out2111.rc == 0
+    when: section_2_1_11 | bool
     tags:
       - scored
       - section2.1

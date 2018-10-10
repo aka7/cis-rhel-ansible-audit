@@ -1,0 +1,177 @@
+# for any exceptions, set the section to no, one set to no won't run.
+# all on by default
+# section 1 controls
+#
+section_1_1_1: yes
+section_1_1_2: yes
+section_1_1_3: yes
+section_1_1_4: yes
+section_1_1_5: yes
+section_1_1_6: yes
+section_1_1_7: yes
+section_1_1_8: yes
+section_1_1_9: yes
+section_1_1_10: yes
+section_1_1_11: yes
+section_1_1_12: yes
+section_1_1_13: yes
+section_1_1_14: yes
+section_1_1_15: yes
+section_1_1_16: yes
+section_1_1_17: yes
+section_1_1_18: yes
+section_1_1_19: yes
+section_1_1_20: yes
+section_1_1_21: yes
+section_1_1_22: yes
+section_1_1_23: yes
+section_1_1_24: yes
+section_1_2_1: yes
+section_1_2_2: yes
+section_1_2_3: yes
+section_1_2_4: yes
+section_1_2_5: yes
+section_1_2_6: yes
+section_1_3_1: yes
+section_1_3_2: yes
+section_1_4_1: yes
+section_1_4_2: yes
+section_1_4_3: yes
+section_1_4_4: yes
+section_1_4_5: yes
+section_1_4_6: yes
+section_1_5_1: yes
+section_1_5_2: yes
+section_1_5_3: yes
+section_1_5_4: yes
+section_1_5_5: yes
+section_1_6_1: yes
+section_1_6_2: yes
+section_1_6_3: yes
+section_1_7: yes
+
+# section 2
+section_2_1_1: yes
+section_2_1_2: yes
+section_2_1_3: yes
+section_2_1_4: yes
+section_2_1_5: yes
+section_2_1_6: yes
+section_2_1_7: yes
+section_2_1_8: yes
+section_2_1_9: yes
+section_2_1_10: yes
+section_2_1_11: yes
+section_2_1_12: yes
+section_2_1_13: yes
+section_2_1_14: yes
+section_2_1_15: yes
+section_2_1_16: yes
+section_2_1_17: yes
+section_2_1_18: yes
+
+#section 3
+section_3_1: yes
+section_3_2: yes
+section_3_3: yes
+section_3_4: yes
+section_3_5: yes
+section_3_6: yes
+section_3_7: yes
+section_3_8: yes
+section_3_9: yes
+section_3_10: yes
+section_3_11: yes
+section_3_12: yes
+section_3_13: yes
+section_3_14: yes
+section_3_15: yes
+section_3_16: yes
+
+# section 4
+section_4_1_1: yes
+section_4_1_2: yes
+section_4_2_1: yes
+section_4_2_2: yes
+section_4_2_3: yes
+section_4_2_4: yes
+section_4_2_5: yes
+section_4_2_6: yes
+section_4_2_7: yes
+section_4_2_8: yes
+section_4_4_1_1: yes
+section_4_4_1_2: yes
+section_4_4_1: yes
+section_4_4_2: yes
+section_4_5_1: yes
+section_4_5_2: yes
+section_4_5_3: yes
+section_4_5_4: yes
+section_4_5_5: yes
+section_4_6: yes
+section_4_7: yes
+section_4_8: yes
+
+#section 5
+section_5_1_1: yes
+section_5_1_2: yes
+section_5_1_3: yes
+section_5_1_4: yes
+section_5_1_5: yes
+section_5_1_6: yes
+section_5_2_1_1: yes
+section_5_2_1_2: yes
+section_5_2_1_2: yes
+section_5_2_1_3: yes
+section_5_2_2: yes
+section_5_2_3: yes
+section_5_2_4: yes
+section_5_2_18: yes
+section_5_3: yes
+
+# section 6
+section_6_1_1: yes
+section_6_1_2: yes
+section_6_1_3: yes
+section_6_1_4: yes
+section_6_1_5: yes
+section_6_1_6: yes
+section_6_1_7: yes
+section_6_1_8: yes
+section_6_1_9: yes
+section_6_1_10: yes
+section_6_1_11: yes
+section_6_2_1: yes
+section_6_2_2: yes
+section_6_2_3: yes
+section_6_2_4: yes
+section_6_2_5: yes
+section_6_2_6: yes
+section_6_2_7: yes
+section_6_2_8: yes
+section_6_2_9: yes
+section_6_2_10: yes
+section_6_2_11: yes
+section_6_2_12: yes
+section_6_2_13: yes
+section_6_2_14: yes
+section_6_3_1: yes
+section_6_3_2: yes
+section_6_3_3: yes
+section_6_3_4: yes
+section_6_4: yes
+section_6_5: yes
+
+# section 7 
+section_7_1_1: yes
+section_7_1_2: yes
+section_7_1_3: yes
+section_7_2: yes
+section_7_3: yes
+section_7_4: yes
+section_7_5: yes
+
+# section 8 
+section_8_1: yes
+section_8_2: yes
+section_8_3: yes

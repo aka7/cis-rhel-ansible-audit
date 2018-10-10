@@ -18,6 +18,7 @@
     shell: grep max_log_file "{{auditdconf}}"
     changed_when: false
     ignore_errors: true
+    when: section_5_2_1_1 | bool
     tags:
       - notscored
       - section5.2
@@ -28,6 +29,7 @@
     shell: grep admin_space_left_action "{{auditdconf}}"
     changed_when: false
     ignore_errors: true
+    when: section_5_2_1_2 | bool
     tags:
       - notscored
       - section5.2
@@ -38,6 +40,7 @@
     shell: grep space_left_action "{{auditdconf}}"
     changed_when: false
     ignore_errors: true
+    when: section_5_2_1_2 | bool
     tags:
       - notscored
       - section5.2
@@ -48,6 +51,7 @@
     shell: grep action_mail_acct "{{auditdconf}}"
     changed_when: false
     ignore_errors: true
+    when: section_5_2_1_2 | bool
     tags:
       - notscored
       - section5.2
@@ -59,6 +63,7 @@
     register: out5213
     changed_when: false
     ignore_errors: true
+    when: section_5_2_1_3 | bool
     failed_when: >
       'keep_logs' not in out5213.stdout
     tags:
@@ -72,6 +77,7 @@
     register: out522
     changed_when: false
     ignore_errors: true
+    when: section_5_2_2 | bool
     failed_when: >
       '3:on' not in out522.stdout
     tags:
@@ -86,6 +92,7 @@
     ignore_errors: true
     failed_when: >
      'audit=1' not in out523.stdout
+    when: section_5_2_3 | bool
     tags:
       - scored
       - section5.2
@@ -163,6 +170,7 @@
       msg: "{{ auditout.results }}"
     changed_when: false
     ignore_errors: true
+    when: section_5_2_4 | bool
     tags:
       - scored
       - section5.2
@@ -186,6 +194,7 @@
     register: out5218
     changed_when: false
     ignore_errors: true
+    when: section_5_2_18 | bool
     tags:
       - scored
       - section5.2

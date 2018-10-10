@@ -21,6 +21,7 @@
       'PASS_MAX_DAYS 90'  not in out711.stdout
     changed_when: false
     ignore_errors: true
+    when: section_7_1_1 | bool
     tags:
       - scored
       - section7.1
@@ -33,6 +34,7 @@
       'PASS_MAX_DAYS 7' not in out712.stdout
     changed_when: false
     ignore_errors: true
+    when: section_7_1_2 | bool
     tags:
       - scored
       - section7.1
@@ -45,6 +47,7 @@
       'PASS_WARN_AGE 7' not in out713.stdout
     changed_when: false
     ignore_errors: true
+    when: section_7_1_3 | bool
     tags:
       - scored
       - section7.1
@@ -56,6 +59,7 @@
     failed_when: out72.stdout != ''
     changed_when: false
     ignore_errors: true
+    when: section_7_2 | bool
     tags:
       - scored
       - section7.2
@@ -66,6 +70,7 @@
     failed_when: out73.stdout != '0'
     changed_when: false
     ignore_errors: true
+    when: section_7_3 | bool
     tags:
       - scored
       - section7.3
@@ -77,6 +82,7 @@
       'umask 077' not in out74.stdout
     changed_when: false
     ignore_errors: true
+    when: section_7_4 | bool
     tags:
       - scored
       - section7.4
@@ -88,6 +94,7 @@
      '35' not in out75.stdout
     changed_when: false
     ignore_errors: true
+    when: section_7_5 | bool
     tags:
       - scored
       - section7.5

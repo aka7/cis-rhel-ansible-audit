@@ -1,0 +1,8 @@
+*.retry
+hosts
+test-hosts
+/inventory/*
+/reports/*
+/plugins/*.pyc
+*.pyc
+.DS_Store

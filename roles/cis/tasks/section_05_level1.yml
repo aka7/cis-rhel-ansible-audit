@@ -20,6 +20,7 @@
     failed_when: rsyslog.rc != 0
     changed_when: false
     ignore_errors: true
+    when: section_5_1_1 | bool
     tags:
       - scored
       - section5.1
@@ -32,6 +33,7 @@
       '3:on' not in rsyslog_chk.stdout
     changed_when: false
     ignore_errors: true
+    when: section_5_1_2 | bool
     tags:
       - scored
       - section5.1
@@ -68,6 +70,7 @@
     shell: cat /etc/rsyslog.conf
     changed_when: false
     ignore_errors: True
+    when: section_5_1_3 | bool
     tags:
       - notscored
       - section5.1
@@ -78,6 +81,7 @@
       msg: "{{ perm_logfiles.results }}"
     changed_when: false
     ignore_errors: True
+    when: section_5_1_4 | bool
     tags:
       - scored
       - section5.1
@@ -90,7 +94,9 @@
       "{{ syslog_dest }}" not in remote_host.stdout
     changed_when: false
     ignore_errors: true
-    when: syslog_dest is defined
+    when: 
+      - syslog_dest is defined
+      - section_5_1_5 | bool
     tags:
       - scored
       - section5.1
@@ -100,6 +106,7 @@
     shell: grep '$ModLoad imtcp.so' /etc/rsyslog.conf
     changed_when: false
     ignore_errors: true
+    when: section_5_1_6 | bool
     tags:
       - notscored
       - section5.1
@@ -109,6 +116,7 @@
     shell: grep '$InputTCPServerRun' /etc/rsyslog.conf
     changed_when: false
     ignore_errors: true
+    when: section_5_1_6 | bool
     tags:
       - notscored
       - section5.1
@@ -129,6 +137,7 @@
       msg: "{{ logrotate.results }}"
     changed_when: false
     ignore_errors: true
+    when: section_5_3 | bool
     tags:
       - notscored
       - section5.3

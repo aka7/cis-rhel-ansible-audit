@@ -21,6 +21,7 @@
       "net.ipv4.ip_forward = 0" not in out411.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_1_1 | bool
     tags:
       - scored
       - section4.1
@@ -33,6 +34,7 @@
       "net.ipv4.conf.all.send_redirects = 0" not in out412.stdout or "net.ipv4.conf.default.send_redirects = 0" not in out412.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_1_2 | bool
     tags:
       - scored
       - section4.1
@@ -46,6 +48,7 @@
       "net.ipv4.conf.default.accept_source_route = 0" not in out421.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_2_1 | bool
     tags:
       - scored
       - section4.2
@@ -59,6 +62,7 @@
       "net.ipv4.conf.default.accept_redirects = 0" not in out422.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_2_2 | bool
     tags:
       - scored
       - section4.2
@@ -72,6 +76,7 @@
       "net.ipv4.conf.default.log_martians = 1" not in out424.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_2_4 | bool
     tags:
       - scored
       - section4.2
@@ -84,6 +89,7 @@
       "net.ipv4.icmp_echo_ignore_broadcasts = 1" not in out425.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_2_5 | bool
     tags:
       - scored
       - section4.2
@@ -96,6 +102,7 @@
       "net.ipv4.icmp_ignore_bogus_error_responses = 1" not in out426.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_2_6 | bool
     tags:
       - scored
       - section4.2
@@ -108,6 +115,7 @@
       "net.ipv4.tcp_syncookies = 1" not in out428.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_2_8 | bool
     tags:
       - scored
       - section4.2
@@ -121,6 +129,7 @@
       "net.ipv6.conf.default.accept_ra = 0" not in out4411.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_4_1_1 | bool
     tags:
       - notscored
       - section4.4
@@ -135,6 +144,7 @@
       "net.ipv6.conf.default.accept_redirects = 0" not in out429.stdout
     changed_when: false
     ignore_errors: true
+    when: section_4_4_1_2 | bool
     tags:
       - notscored
       - section4.4
@@ -148,6 +158,7 @@
     ignore_errors: true
     failed_when: >
       'no' not in ipv6_enable.stdout and ipv6_enable.stdout != ''
+    when: section_4_4_2 | bool
     tags:
       - notscored
       - section4.4
@@ -160,6 +171,7 @@
       'no' not in ipv6_enable.stdout and ipv6_enable.stdout != ''
     changed_when: false
     ignore_errors: true
+    when: section_4_4_2 | bool
     tags:
       - notscored
       - section4.4
@@ -172,6 +184,7 @@
     ignore_errors: true
     failed_when: >
       'is not installed' not in out451.stdout 
+    when: section_4_5_1 | bool
     tags:
       - notscored
       - section4.5
@@ -183,6 +196,7 @@
     register: hostsallow
     changed_when: false
     ignore_errors: True
+    when: section_4_5_2 | bool
     tags:
       - notscored
       - section4.5
@@ -191,6 +205,7 @@
     register: hostsallowperm
     changed_when: false
     ignore_errors: True
+    when: section_4_5_2 | bool
     tags:
       - notscored
       - section4.5
@@ -200,6 +215,7 @@
     register: hostsdeny
     changed_when: false
     ignore_errors: True
+    when: section_4_5_5 | bool
     tags:
       - scored
       - section4.5
@@ -209,6 +225,7 @@
     register: hostsdenyperm
     changed_when: false
     ignore_errors: True
+    when: section_4_5_5 | bool
     tags:
       - scored
       - section4.5
@@ -220,6 +237,7 @@
       hostsallow.stat.exists == False
     changed_when: false
     ignore_errors: True
+    when: section_4_5_2 | bool
     tags:
       - notscored
       - section4.5
@@ -232,6 +250,7 @@
       hostsallow.stat.uid != 0 or hostsallow.stat.gid != 0 or hostsallow.stat.mode != '0644'
     changed_when: false
     ignore_errors: True
+    when: section_4_5_3 | bool
     tags:
       - scored
       - section4.5
@@ -244,6 +263,7 @@
     ignore_errors: true
     failed_when: >
       'ALL: ALL' not in out454.stdout
+    when: section_4_5_4 | bool
     tags:
       - notscored
       - section4.5
@@ -256,6 +276,7 @@
       hostsdeny.stat.uid != 0 or hostsdeny.stat.gid != 0 or hostsdeny.stat.mode != '0644'
     changed_when: false
     ignore_errors: True
+    when: section_4_5_5 | bool
     tags:
       - scored
       - section4.5
@@ -270,6 +291,7 @@
       - tipc
     changed_when: false
     ignore_errors: true
+    when: section_4_6 | bool
     tags:
       - notscored
       - section4.6
@@ -283,6 +305,7 @@
       msg: "{{ modprobe.results }}"
     changed_when: false
     ignore_errors: true
+    when: section_4_6 | bool
     tags:
       - notscored
       - section4.6
@@ -298,6 +321,7 @@
     ignore_errors: true
     failed_when: >
       out47.rc != 0 or '3:on' not in out47.stdout 
+    when: section_4_7 | bool
     tags:
       - scored
       - section4.7
@@ -309,6 +333,7 @@
     ignore_errors: true
     failed_when: >
       out48.rc == 0 and ':on' in out48.stdout 
+    when: section_4_8 | bool
     tags:
       - notscored
       - section4.8
