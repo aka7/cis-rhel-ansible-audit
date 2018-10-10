@@ -26,14 +26,6 @@ section10 is added to allow any company specific controls, which are not require
 
 enable plugins/custom_reporter.py in ansible.cfg (set by default)
 
-### Control exceptions
-if you have exceptions on any control and do not want to run the control in full run. set the control to No in file =roles/cis/defaults/main.yml=
-For exmaple, to not run section 1.1.1, set value to no
-```
-grep section_1_1_1: roles/cis/defaults/main.yml
-section_1_1_1: no
-
-    ```
 
 ```
 callback_plugins = plugins
@@ -41,6 +33,15 @@ callback_plugins = plugins
 This is enabled by the default in ansible.cfg file provided.
 
 Make sure this is in the current directory.
+
+### Control exceptions
+if you have exceptions on any control and do not want to run the control in full run. set the control to No in file =roles/cis/defaults/main.yml=
+For exmaple, to not run section 1.1.1, set value to no
+```
+grep section_1_1_1: roles/cis/defaults/main.yml
+section_1_1_1: no
+
+```
 
 ### Warn 
 Check the scripts in files/bin and enable them as mentioned.  These checks are disabled by default, just so you can review them before running.
